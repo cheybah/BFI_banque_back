@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendBanqueApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(BackendBanqueApplication.class, args);
+		System.out.println("It's working !"); //Display this message to ensure the back works
+
 	}
 
 }
