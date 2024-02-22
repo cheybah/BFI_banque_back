@@ -26,6 +26,7 @@ public class UserAuthenticationProvider {
 
     private final UserService userService;
 
+
     @PostConstruct
     protected void init() {
         // this is to avoid having the raw secret key available in the JVM
@@ -33,8 +34,9 @@ public class UserAuthenticationProvider {
     }
 
     public String createToken(UserDto user) {
+
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3600000); // 1 hour
+        Date validity = new Date(now.getTime() + 3600000); // 1 hour of token life
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
@@ -73,7 +75,9 @@ public class UserAuthenticationProvider {
 
         UserDto user = userService.findByLogin(decoded.getSubject());
 
+
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
+
 
 }

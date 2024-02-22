@@ -1,11 +1,14 @@
 package com.bfi.backend.entites;
 
+import com.bfi.backend.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +18,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "app_user")
 public class User {
 
-    @Id
+    @Id //primary key for user
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "first_name", nullable = false)
     @Size(max = 100)
@@ -27,11 +33,28 @@ public class User {
     @Size(max = 100)
     private String lastName;
 
+    @Column
+    private String photo;
+
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
+
+    @Column(nullable = false, unique = true)
     @Size(max = 100)
     private String login;
 
     @Column(nullable = false)
     @Size(max = 100)
     private String password;
+
+    // Define the relationship with the Address entity with a foreign key
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 }
