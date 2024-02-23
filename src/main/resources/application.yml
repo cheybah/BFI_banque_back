@@ -1,10 +1,14 @@
+security.jwt.token.secret-key: aa8d80c5-57d8-4b02-96f0-0d83056a36b0
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:2709/bfi
+    url: jdbc:postgresql://localhost:5432/bfi
     username: postgres
-    password: chey
+    password: sourour02
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+server:
+  port: 8080

@@ -32,6 +32,7 @@ public class AddressController {
     public ResponseEntity<Address> getAddressById(@PathVariable("id") Long id) {
         Optional<Address> address = addressService.getAddressById(id);
         return address.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
     }
 
     @PostMapping

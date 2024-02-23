@@ -36,6 +36,12 @@ public class WebConfig {
                 HttpMethod.DELETE.name()));
         config.setMaxAge(MAX_AGE);
         source.registerCorsConfiguration("/login", config);
+        source.registerCorsConfiguration("/register", config);
+        source.registerCorsConfiguration("/reset", config);
+        source.registerCorsConfiguration("/counter", config);
+        source.registerCorsConfiguration("/dash/**", config);
+        source.registerCorsConfiguration("/check-email", config);
+
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
 
         // should be set order to -100 because we need to CorsFilter before SpringSecurityFilter
