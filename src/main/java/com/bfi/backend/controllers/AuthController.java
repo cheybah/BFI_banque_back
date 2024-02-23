@@ -8,11 +8,11 @@ import com.bfi.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,6 +33,29 @@ public class AuthController {
         UserDto createdUser = userService.register(user);
         createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
         return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
+    }
+    @PutMapping("/reset")
+    public ResponseEntity<UserDto> resetPassword(@RequestBody Map<String, String> resetRequest) {
+        String login = resetRequest.get("login");
+        String newPassword = resetRequest.get("newpassword");
+
+        // Call the resetPassword method of the UserService
+        userService.resetPassword(login, newPassword);
+
+        // Retrieve updated user details
+        UserDto updatedUser = userService.findByLogin(login);
+
+        // Regenerate token for the updated user
+        String newToken = userAuthenticationProvider.createToken(updatedUser);
+        updatedUser.setToken(newToken);
+
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmailExistence(@RequestParam String email) {
+        boolean exists = userService.checkEmailExistence(email);
+        return ResponseEntity.ok(Collections.singletonMap("exists", exists));
     }
 
 }
