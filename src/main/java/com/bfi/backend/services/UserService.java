@@ -56,4 +56,10 @@ public class UserService {
         return userMapper.toUserDto(user);
     }
 
+    public UserDto getUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+        return userMapper.toUserDto(user);
+    }
+
 }

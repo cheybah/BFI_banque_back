@@ -1,6 +1,7 @@
 package com.bfi.backend.entites;
 
 import com.bfi.backend.enums.AccountType;
+import com.bfi.backend.enums.AgencyName;
 import com.bfi.backend.enums.PackType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,9 @@ public class AccountOffer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "agency_name")
-    private String agencyName;
+    private AgencyName agencyName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_type")

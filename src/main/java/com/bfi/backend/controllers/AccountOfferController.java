@@ -13,7 +13,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/dash/offres-et-domicialisation", produces = "application/json")
-public class AccountOfferController {
+    public class AccountOfferController {
 
     private final AccountOfferService accountOfferService;
 
