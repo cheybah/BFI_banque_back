@@ -3,9 +3,9 @@ package com.bfi.backend.services;
 import com.bfi.backend.dtos.CredentialsDto;
 import com.bfi.backend.dtos.SignUpDto;
 import com.bfi.backend.dtos.UserDto;
-import com.bfi.backend.mappers.UserMapper;
 import com.bfi.backend.entites.User;
 import com.bfi.backend.exceptions.AppException;
+import com.bfi.backend.mappers.UserMapper;
 import com.bfi.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,10 +56,20 @@ public class UserService {
         return userMapper.toUserDto(user);
     }
 
-    public UserDto getUserById(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
-        return userMapper.toUserDto(user);
+    public void resetPassword(String login, String newPassword) {
+        // Encrypt the new password
+        String encryptedPassword = passwordEncoder.encode(newPassword);
+
+        // Retrieve the user by login
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new AppException("User with provided login does not exist", HttpStatus.NOT_FOUND));
+
+        // Update the user's password with the encrypted one
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+    }
+    public boolean checkEmailExistence(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 
 }

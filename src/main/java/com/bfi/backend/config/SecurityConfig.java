@@ -29,7 +29,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST,  "/login", "/dash/**").permitAll()
                         .requestMatchers(HttpMethod.GET,   "/dash/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT,  "/reset").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/counter").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/check-email").permitAll()
+
                         .anyRequest().authenticated())
+
         ;
         return http.build();
     }
