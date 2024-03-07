@@ -1,0 +1,22 @@
+package com.bfi.backend.admin.dtos;
+
+import com.bfi.backend.admin.enums.AdminRole;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class AdminUserDto {
+
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String login;
+    private String token;
+    private AdminRole role;
+}
