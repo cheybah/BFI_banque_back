@@ -4,8 +4,6 @@ import com.bfi.backend.config.UserAuthenticationProvider;
 import com.bfi.backend.dtos.CredentialsDto;
 import com.bfi.backend.dtos.SignUpDto;
 import com.bfi.backend.dtos.UserDto;
-import com.bfi.backend.entites.Phone;
-import com.bfi.backend.services.PhoneService;
 import com.bfi.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
