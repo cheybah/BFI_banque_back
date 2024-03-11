@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:2709/bfi
+    url: jdbc:postgresql://localhost:5432/bfi
     username: postgres
-    password: chey
+    password: sourour02
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -13,8 +13,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-
-
 
 
 
