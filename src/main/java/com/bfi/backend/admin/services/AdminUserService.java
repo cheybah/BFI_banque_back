@@ -6,18 +6,25 @@ import com.bfi.backend.admin.entities.AdminUser;
 import com.bfi.backend.admin.mappers.AdminUserMapper;
 import com.bfi.backend.admin.repository.AdminUserRepository;
 import com.bfi.backend.admin.dtos.AdminCredentialsDto;
+import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.repositories.UserRepository;
 import com.bfi.backend.common.exceptions.AppException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class AdminUserService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final AdminUserRepository adminUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -52,5 +59,13 @@ public class AdminUserService {
         AdminUser adminUser = adminUserRepository.findByLogin(login)
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         return adminUserMapper.toAdminUserDto(adminUser);
+    }
+
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }
