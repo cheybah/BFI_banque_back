@@ -1,6 +1,7 @@
 package com.bfi.backend.common.config;
 
 import com.bfi.backend.admin.auth.AdminUserAuthenticationProvider;
+import com.bfi.backend.admin.enums.AdminRole;
 import com.bfi.backend.client.auth.UserAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider, adminUserAuthenticationProvider), BasicAuthenticationFilter.class) // Modify this line
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST,  "/**").permitAll()
                         .requestMatchers(HttpMethod.GET,   "/**").permitAll()
