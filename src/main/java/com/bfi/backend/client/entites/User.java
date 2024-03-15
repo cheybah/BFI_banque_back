@@ -35,7 +35,7 @@ public class User {
 
     @Column(name = "photo")
     private String photo;
-
+  
     @Column(nullable = false)
     private String email;
 
