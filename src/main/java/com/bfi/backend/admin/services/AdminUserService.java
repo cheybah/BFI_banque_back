@@ -3,10 +3,13 @@ package com.bfi.backend.admin.services;
 import com.bfi.backend.admin.dtos.AdminSignUpDto;
 import com.bfi.backend.admin.dtos.AdminUserDto;
 import com.bfi.backend.admin.entities.AdminUser;
+import com.bfi.backend.admin.entities.Archived_App_User;
 import com.bfi.backend.admin.mappers.AdminUserMapper;
 import com.bfi.backend.admin.repository.AdminUserRepository;
 import com.bfi.backend.admin.dtos.AdminCredentialsDto;
+import com.bfi.backend.admin.repository.ArchivedUserRepository;
 import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.enums.UserStatus;
 import com.bfi.backend.client.repositories.UserRepository;
 import com.bfi.backend.common.exceptions.AppException;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,9 @@ public class AdminUserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ArchivedUserRepository archivedUserRepository;
 
     private final AdminUserRepository adminUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -62,10 +68,28 @@ public class AdminUserService {
     }
 
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    public List<User> getAllUsers() {    return userRepository.findByStatus(UserStatus.ACTIVE);}
+
+    /*
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+*/
+
+
+    public void deleteUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setStatus(UserStatus.INACTIVE);
+            userRepository.save(user);
+        } else {
+            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
+   // Assuming you have a repository for Archived_App_User
+
+    public List<Archived_App_User> getAllArchivedUsers() {
+        return archivedUserRepository.findAll();
     }
 }

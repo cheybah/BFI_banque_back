@@ -1,7 +1,7 @@
-package com.bfi.backend.client.entites;
+package com.bfi.backend.admin.entities;
 
+import com.bfi.backend.client.entites.Address;
 import com.bfi.backend.client.enums.Gender;
-import com.bfi.backend.client.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -10,15 +10,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 @Entity
-@Table(name = "app_user")
-public class User {
-
+@Table(name = "archived_app_user")
+public class Archived_App_User {
     @Id //primary key for user
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +34,7 @@ public class User {
 
     @Column(name = "photo")
     private String photo;
-  
+
     @Column(nullable = false)
     private String email;
 
@@ -58,8 +56,4 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserStatus status = UserStatus.ACTIVE;
 }
