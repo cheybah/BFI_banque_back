@@ -1,12 +1,16 @@
 package com.bfi.backend.client.services;
 
 import com.bfi.backend.client.dtos.CredentialsDto;
+import com.bfi.backend.client.entites.AdditionalInfo;
+import com.bfi.backend.client.entites.Address;
 import com.bfi.backend.client.entites.User;
 import com.bfi.backend.client.mappers.UserMapper;
 import com.bfi.backend.client.dtos.SignUpDto;
 import com.bfi.backend.client.dtos.UserDto;
+import com.bfi.backend.client.dtos.AdditionalInfoDto;
 import com.bfi.backend.common.exceptions.AppException;
 import com.bfi.backend.client.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +49,32 @@ public class UserService {
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
 
+        // Create and save the address
+        Address address = new Address();
+        // Set address properties
+        address.setCountry(userDto.address().getCountry());
+        address.setCity(userDto.address().getCity());
+        address.setNeighbourhood(userDto.address().getNeighbourhood());
+        address.setZipCode(userDto.address().getZipCode());
+        // Associate address with the user
+        user.setAddress(address);
+        address.setUser(user);  //save user_id in address
+
+        // Create and save additional information
+        AdditionalInfo additionalInfo = new AdditionalInfo();
+        // Populate additionalInfo fields as needed
+        additionalInfo.setTypeIndividual(userDto.additionalInfo().getTypeIndividual());
+        additionalInfo.setProfession(userDto.additionalInfo().getProfession());
+        additionalInfo.setPieceType(userDto.additionalInfo().getPieceType());
+        additionalInfo.setPieceNumber(userDto.additionalInfo().getPieceNumber());
+        additionalInfo.setExpirationDate(userDto.additionalInfo().getExpirationDate());
+        additionalInfo.setPiecePhoto(userDto.additionalInfo().getPiecePhoto());
+        additionalInfo.setReferralCode(userDto.additionalInfo().getReferralCode());
+        // Associate additionalInfo with the user
+        user.setAdditionalInfo(additionalInfo);
+        additionalInfo.setUser(user);
+
+
         User savedUser = userRepository.save(user);
 
         return userMapper.toUserDto(savedUser);
@@ -68,6 +98,12 @@ public class UserService {
         user.setPassword(encryptedPassword);
         userRepository.save(user);
     }
+
+
+   public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
 
 
 
