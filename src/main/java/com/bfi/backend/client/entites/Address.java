@@ -1,5 +1,6 @@
 package com.bfi.backend.client.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,4 +30,9 @@ public class Address {
 
     @Column(nullable = false)
     private String zipCode;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY) // Specify fetch type
+    @JoinColumn(name = "user_id")
+    private User user; // Foreign key referencing the User table
 }

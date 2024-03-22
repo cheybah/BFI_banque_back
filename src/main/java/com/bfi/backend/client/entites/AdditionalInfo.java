@@ -2,6 +2,7 @@ package com.bfi.backend.client.entites;
 
 import com.bfi.backend.client.enums.PieceType;
 import com.bfi.backend.client.enums.TypeIndividual;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,27 +24,33 @@ public class AdditionalInfo {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type_individual")
+    @Column(nullable = false)
     private TypeIndividual typeIndividual;
 
-    @Column(name = "profession")
+    @Column(nullable = false)
     private String profession;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "piece_type")
+    @Column(nullable = false)
     private PieceType pieceType;
 
-    @Column(name = "piece_number")
+    @Column(nullable = false)
     private String pieceNumber;
 
-    @Column(name = "expiration_date")
+    @Column(nullable = false)
     private LocalDate expirationDate;
 
-    @Column(name = "piece_photo")
+    @Column(nullable = false)
     private String piecePhoto;
 
-    @Column(name = "referral_code")
+    @Column(nullable = false)
     private String referralCode;
+
+    // Define the relationship with User entity
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
 

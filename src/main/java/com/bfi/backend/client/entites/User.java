@@ -1,6 +1,7 @@
 package com.bfi.backend.client.entites;
 
 import com.bfi.backend.client.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -53,8 +54,8 @@ public class User {
     @Size(max = 100)
     private String password;
 
-    // Define the relationship with the Address entity with a foreign key
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Specify fetch type
     private Address address;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AdditionalInfo additionalInfo;
 }

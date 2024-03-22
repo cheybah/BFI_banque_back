@@ -4,15 +4,21 @@ import com.bfi.backend.client.dtos.CredentialsDto;
 import com.bfi.backend.client.auth.UserAuthenticationProvider;
 import com.bfi.backend.client.dtos.SignUpDto;
 import com.bfi.backend.client.dtos.UserDto;
+import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.repositories.UserRepository;
 import com.bfi.backend.client.services.UserService;
+import com.bfi.backend.common.exceptions.AppException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,6 +26,7 @@ public class AuthController {
 
     private final UserService userService;
     private final UserAuthenticationProvider userAuthenticationProvider;
+    private final UserRepository userRepository;
 
 
     @PostMapping("/bfi/login")
@@ -33,6 +40,7 @@ public class AuthController {
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         UserDto createdUser = userService.register(user);
         createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
+        System.out.println("Created User: " + createdUser); // Add this line to print the created user
         return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
     }
     @PutMapping("/reset")
@@ -52,6 +60,17 @@ public class AuthController {
 
         return ResponseEntity.ok(updatedUser);
     }
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> findById(@PathVariable("id") Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Hibernate.initialize(user.getAddress()); // Explicitly initialize the address
+            return ResponseEntity.ok(user); // Wrap the user in ResponseEntity and return
+        } else {
+            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/check-email")
     public ResponseEntity<Map<String, Boolean>> checkEmailExistence(@RequestParam String email) {
@@ -59,41 +78,5 @@ public class AuthController {
         return ResponseEntity.ok(Collections.singletonMap("exists", exists));
     }
 
-
-
-
-   /* @PostMapping("/users/{userId}/phones")
-    public ResponseEntity<Phone> addPhoneToUser(@PathVariable Long userId, @RequestBody Phone phone) {
-        UserDto userDto = userService.getUserById(userId);
-        if (userDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        // Assuming you have a method in PhoneService to add a phone to a user
-        phone.setUser(UserDto);
-        Phone savedPhone = phoneService.savePhone(phone);
-        return ResponseEntity.ok(savedPhone);
-    } */
-
-    /*@PutMapping("/users/{userId}/phones/{phoneId}")
-    public ResponseEntity<Phone> updatePhoneForUser(@PathVariable Long userId, @PathVariable Long phoneId, @RequestBody Phone newPhoneData) {
-        UserDto userDto = userService.getUserById(userId);
-        if (userDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        // Assuming you have a method in PhoneService to update a phone for a user
-        Phone updatedPhone = phoneService.updatePhone(phoneId, newPhoneData);
-        return ResponseEntity.ok(updatedPhone);
-    } */
-
-    /*@DeleteMapping("/users/{userId}/phones/{phoneId}")
-    public ResponseEntity<Void> deletePhoneForUser(@PathVariable Long userId, @PathVariable Long phoneId) {
-        UserDto userDto = userService.getUserById(userId);
-        if (userDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        // Assuming you have a method in PhoneService to delete a phone for a user
-        phoneService.deletePhone(phoneId);
-        return ResponseEntity.noContent().build();
-    } */
 
 }
