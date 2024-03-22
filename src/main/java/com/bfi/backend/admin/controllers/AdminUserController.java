@@ -22,32 +22,14 @@ public class AdminUserController {
 
     @Autowired
     private AdminUserService adminuserService;
-
+    @Autowired
+    private UserRepository userRepository;
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = adminuserService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-@Autowired
-private UserRepository userRepository;
-@Autowired
 
-private  UserMapper userMapper;
-
-  /*  @GetMapping
-    public ResponseEntity<List<UserDto>> getUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserDto> userDtos = users.stream()
-                .map(user -> {
-                    UserDto userDto = userMapper.toUserDto(user);
-                    byte[] photoBytes = user.getPhoto().getBytes(); // Obtenez les données binaires de l'image
-                    String base64EncodedPhoto = Base64.getEncoder().encodeToString(photoBytes); // Convertissez en base64
-                    userDto.setPhoto(Arrays.toString(base64EncodedPhoto.getBytes())); // Assignez la chaîne base64 à UserDto
-                    return userDto;
-                })
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(userDtos);
-    }*/
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         try {
@@ -58,4 +40,5 @@ private  UserMapper userMapper;
                     .body("Failed to delete user with ID " + id + ".");
         }
     }
+
 }
