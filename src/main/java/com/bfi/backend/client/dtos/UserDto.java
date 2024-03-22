@@ -24,7 +24,7 @@ public class UserDto {
     private LocalDate dateOfBirth;
     private String login;
     private String token;
-
-
+    private AddressDto address;
+    private AdditionalInfoDto additionalInfo ;
 
 }
