@@ -47,6 +47,7 @@ public class UserService {
         }
 
         User user = userMapper.signUpToUser(userDto);
+        user.setStatus(true);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
 
         // Create and save the address

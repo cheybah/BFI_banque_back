@@ -1,7 +1,7 @@
 package com.bfi.backend.admin.controllers;
 
-import com.bfi.backend.admin.entities.Archived_App_User;
 import com.bfi.backend.admin.services.AdminUserService;
+import com.bfi.backend.client.entites.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +18,8 @@ public class ArchivedUserController {
     private AdminUserService adminUserService;
 
     @GetMapping
-    public ResponseEntity<List<Archived_App_User>> getAllArchivedUsers() {
-        List<Archived_App_User> archivedUsers = adminUserService.getAllArchivedUsers();
+    public ResponseEntity<List<User>> getAllArchivedUsers() {
+        List<User> archivedUsers = adminUserService.getAllArchivedUsers();
         return ResponseEntity.ok(archivedUsers);
     }
 }
