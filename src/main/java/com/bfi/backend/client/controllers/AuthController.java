@@ -39,6 +39,7 @@ public class AuthController {
     @PostMapping("/dash/informations-personelles")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         UserDto createdUser = userService.register(user);
+
         createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
         System.out.println("Created User: " + createdUser); // Add this line to print the created user
         return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);

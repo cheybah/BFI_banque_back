@@ -1,8 +1,6 @@
 package com.bfi.backend.client.entites;
 
 import com.bfi.backend.client.enums.Gender;
-import com.bfi.backend.client.enums.UserStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -55,12 +53,13 @@ public class User {
     @Size(max = 100)
     private String password;
 
+    @Column(name = "status", nullable = false)
+    private boolean status ;
+
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Specify fetch type
     private Address address;
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserStatus status = UserStatus.ACTIVE;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AdditionalInfo additionalInfo;
 }

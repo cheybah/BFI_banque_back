@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,14 +29,17 @@ public class AdminUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
         try {
             adminuserService.deleteUser(id);
-            return ResponseEntity.ok("User with ID " + id + " deleted successfully.");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "User with ID " + id + " deleted successfully.");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to delete user with ID " + id + ".");
+                    .body(Collections.singletonMap("error", "Failed to delete user with ID " + id + "."));
         }
     }
+
 
 }
