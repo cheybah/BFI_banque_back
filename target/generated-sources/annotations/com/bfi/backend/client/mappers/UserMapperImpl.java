@@ -1,5 +1,6 @@
 package com.bfi.backend.client.mappers;
 
+import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.dtos.AdditionalInfoDto;
 import com.bfi.backend.client.dtos.AddressDto;
 import com.bfi.backend.client.dtos.SignUpDto;
@@ -12,11 +13,34 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-22T12:36:37+0100",
+    date = "2024-04-17T15:54:01+0200",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 18.0.2.1 (Oracle Corporation)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
+
+    @Override
+    public User signUpToUser(SignUpDto signUpDto) {
+        if ( signUpDto == null ) {
+            return null;
+        }
+
+        User.UserBuilder user = User.builder();
+
+        user.agency( signUpDtoToAgency( signUpDto ) );
+        user.gender( signUpDto.gender() );
+        user.firstName( signUpDto.firstName() );
+        user.lastName( signUpDto.lastName() );
+        user.photo( signUpDto.photo() );
+        user.email( signUpDto.email() );
+        user.phoneNumber( signUpDto.phoneNumber() );
+        user.dateOfBirth( signUpDto.dateOfBirth() );
+        user.login( signUpDto.login() );
+        user.address( toAddress( signUpDto.address() ) );
+        user.additionalInfo( toAdditionalInfo( signUpDto.additionalInfo() ) );
+
+        return user.build();
+    }
 
     @Override
     public UserDto toUserDto(User user) {
@@ -26,6 +50,7 @@ public class UserMapperImpl implements UserMapper {
 
         UserDto.UserDtoBuilder userDto = UserDto.builder();
 
+        userDto.agencyId( userAgencyIdAgency( user ) );
         userDto.id( user.getId() );
         userDto.gender( user.getGender() );
         userDto.firstName( user.getFirstName() );
@@ -39,28 +64,6 @@ public class UserMapperImpl implements UserMapper {
         userDto.additionalInfo( toAdditionalInfoDto( user.getAdditionalInfo() ) );
 
         return userDto.build();
-    }
-
-    @Override
-    public User signUpToUser(SignUpDto signUpDto) {
-        if ( signUpDto == null ) {
-            return null;
-        }
-
-        User.UserBuilder user = User.builder();
-
-        user.gender( signUpDto.gender() );
-        user.firstName( signUpDto.firstName() );
-        user.lastName( signUpDto.lastName() );
-        user.photo( signUpDto.photo() );
-        user.email( signUpDto.email() );
-        user.phoneNumber( signUpDto.phoneNumber() );
-        user.dateOfBirth( signUpDto.dateOfBirth() );
-        user.login( signUpDto.login() );
-        user.address( toAddress( signUpDto.address() ) );
-        user.additionalInfo( toAdditionalInfo( signUpDto.additionalInfo() ) );
-
-        return user.build();
     }
 
     @Override
@@ -131,5 +134,32 @@ public class UserMapperImpl implements UserMapper {
         additionalInfo.referralCode( additionalInfoDto.getReferralCode() );
 
         return additionalInfo.build();
+    }
+
+    protected Agency signUpDtoToAgency(SignUpDto signUpDto) {
+        if ( signUpDto == null ) {
+            return null;
+        }
+
+        Agency.AgencyBuilder agency = Agency.builder();
+
+        agency.idAgency( signUpDto.agencyId() );
+
+        return agency.build();
+    }
+
+    private Long userAgencyIdAgency(User user) {
+        if ( user == null ) {
+            return null;
+        }
+        Agency agency = user.getAgency();
+        if ( agency == null ) {
+            return null;
+        }
+        Long idAgency = agency.getIdAgency();
+        if ( idAgency == null ) {
+            return null;
+        }
+        return idAgency;
     }
 }

@@ -26,5 +26,6 @@ public class UserDto {
     private String token;
     private AddressDto address;
     private AdditionalInfoDto additionalInfo ;
+    private Long agencyId;
 
 }

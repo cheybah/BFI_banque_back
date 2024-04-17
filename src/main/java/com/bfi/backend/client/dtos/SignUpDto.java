@@ -4,4 +4,4 @@ import com.bfi.backend.client.enums.Gender;
 
 import java.time.LocalDate;
 
-public record SignUpDto (Gender gender, String firstName, String lastName, String photo, String email, String phoneNumber, LocalDate dateOfBirth, String login, char[] password, AddressDto address, AdditionalInfoDto additionalInfo) { }
+public record SignUpDto (Gender gender, String firstName, String lastName, String photo, String email, String phoneNumber, LocalDate dateOfBirth, String login, char[] password, AddressDto address, AdditionalInfoDto additionalInfo,Long agencyId) { }
