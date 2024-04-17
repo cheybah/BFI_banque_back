@@ -1,5 +1,6 @@
 package com.bfi.backend.client.entites;
 
+import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -62,4 +63,8 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AdditionalInfo additionalInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
 }

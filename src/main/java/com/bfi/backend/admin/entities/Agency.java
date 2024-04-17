@@ -1,5 +1,6 @@
 package com.bfi.backend.admin.entities;
 
+import com.bfi.backend.client.entites.User;
 import com.bfi.backend.client.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,4 +41,7 @@ public class Agency {
 
     @Column(name = "address", nullable = false)
     private String address;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
+    private List<User> userList;
 }
