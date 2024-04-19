@@ -2,6 +2,7 @@ package com.bfi.backend.client.entites;
 
 import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -64,6 +65,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AdditionalInfo additionalInfo;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
