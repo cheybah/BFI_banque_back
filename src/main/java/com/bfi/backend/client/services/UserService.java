@@ -1,13 +1,12 @@
 package com.bfi.backend.client.services;
 
-import com.bfi.backend.client.dtos.CredentialsDto;
+import com.bfi.backend.client.dtos.*;
 import com.bfi.backend.client.entites.AdditionalInfo;
 import com.bfi.backend.client.entites.Address;
+import com.bfi.backend.client.entites.BankAccount;
 import com.bfi.backend.client.entites.User;
 import com.bfi.backend.client.mappers.UserMapper;
-import com.bfi.backend.client.dtos.SignUpDto;
-import com.bfi.backend.client.dtos.UserDto;
-import com.bfi.backend.client.dtos.AdditionalInfoDto;
+import com.bfi.backend.client.repositories.BankAccountRepository;
 import com.bfi.backend.common.exceptions.AppException;
 import com.bfi.backend.client.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -17,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,6 +25,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final BankAccountRepository bankAccountRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -39,7 +42,8 @@ public class UserService {
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    public UserDto register(SignUpDto userDto) {
+
+        public UserDto register(SignUpDto userDto) {
         Optional<User> optionalUser = userRepository.findByLogin(userDto.login());
 
         if (optionalUser.isPresent()) {
@@ -75,8 +79,10 @@ public class UserService {
         user.setAdditionalInfo(additionalInfo);
         additionalInfo.setUser(user);
 
-
         User savedUser = userRepository.save(user);
+
+
+        System.out.println("id 4user"+user.getId());
 
         return userMapper.toUserDto(savedUser);
     }

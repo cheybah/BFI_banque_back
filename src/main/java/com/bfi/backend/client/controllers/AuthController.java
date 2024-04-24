@@ -1,11 +1,13 @@
 package com.bfi.backend.client.controllers;
 
+import com.bfi.backend.client.dtos.BankAccountDto;
 import com.bfi.backend.client.dtos.CredentialsDto;
 import com.bfi.backend.client.auth.UserAuthenticationProvider;
 import com.bfi.backend.client.dtos.SignUpDto;
 import com.bfi.backend.client.dtos.UserDto;
 import com.bfi.backend.client.entites.User;
 import com.bfi.backend.client.repositories.UserRepository;
+import com.bfi.backend.client.services.BankAccountService;
 import com.bfi.backend.client.services.UserService;
 import com.bfi.backend.common.exceptions.AppException;
 import jakarta.validation.Valid;
@@ -25,6 +27,8 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserService userService;
+    private final BankAccountService bankAccountService;
+
     private final UserAuthenticationProvider userAuthenticationProvider;
     private final UserRepository userRepository;
 
@@ -39,6 +43,15 @@ public class AuthController {
     @PostMapping("/dash/informations-personelles")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         UserDto createdUser = userService.register(user);
+        // Create bank accounts for the user
+        for (BankAccountDto bankAccountDto : user.bankAccounts()) {
+            bankAccountDto.setUserId(createdUser.getId());
+            bankAccountService.createBankAccount(bankAccountDto);
+        }
+
+        // Retrieve the updated user
+        createdUser = userService.findByLogin(user.login());
+
 
         createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
         System.out.println("Created User: " + createdUser); // Add this line to print the created user

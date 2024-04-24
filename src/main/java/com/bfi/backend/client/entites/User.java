@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -69,4 +70,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<BankAccount> bankAccountList;
 }

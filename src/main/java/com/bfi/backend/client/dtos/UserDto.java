@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +28,6 @@ public class UserDto {
     private AddressDto address;
     private AdditionalInfoDto additionalInfo ;
     private Long agencyId;
+    private List<BankAccountDto> bankAccounts;
 
 }
