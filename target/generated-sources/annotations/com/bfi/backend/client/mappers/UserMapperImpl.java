@@ -3,17 +3,21 @@ package com.bfi.backend.client.mappers;
 import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.dtos.AdditionalInfoDto;
 import com.bfi.backend.client.dtos.AddressDto;
+import com.bfi.backend.client.dtos.BankAccountDto;
 import com.bfi.backend.client.dtos.SignUpDto;
 import com.bfi.backend.client.dtos.UserDto;
 import com.bfi.backend.client.entites.AdditionalInfo;
 import com.bfi.backend.client.entites.Address;
+import com.bfi.backend.client.entites.BankAccount;
 import com.bfi.backend.client.entites.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-19T16:01:42+0100",
+    date = "2024-04-23T16:34:27+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (Oracle Corporation)"
 )
 @Component
@@ -50,6 +54,7 @@ public class UserMapperImpl implements UserMapper {
 
         UserDto.UserDtoBuilder userDto = UserDto.builder();
 
+        userDto.bankAccounts( bankAccountListToBankAccountDtoList( user.getBankAccountList() ) );
         userDto.agencyId( userAgencyIdAgency( user ) );
         userDto.id( user.getId() );
         userDto.gender( user.getGender() );
@@ -64,6 +69,34 @@ public class UserMapperImpl implements UserMapper {
         userDto.additionalInfo( toAdditionalInfoDto( user.getAdditionalInfo() ) );
 
         return userDto.build();
+    }
+
+    @Override
+    public BankAccountDto toBankAccountDto(BankAccount bankAccount) {
+        if ( bankAccount == null ) {
+            return null;
+        }
+
+        BankAccountDto.BankAccountDtoBuilder bankAccountDto = BankAccountDto.builder();
+
+        bankAccountDto.rib( bankAccount.getRib() );
+        bankAccountDto.code( bankAccount.getCode() );
+
+        return bankAccountDto.build();
+    }
+
+    @Override
+    public BankAccount toBankAccount(BankAccountDto bankAccountDto) {
+        if ( bankAccountDto == null ) {
+            return null;
+        }
+
+        BankAccount.BankAccountBuilder bankAccount = BankAccount.builder();
+
+        bankAccount.rib( bankAccountDto.getRib() );
+        bankAccount.code( bankAccountDto.getCode() );
+
+        return bankAccount.build();
     }
 
     @Override
@@ -146,6 +179,19 @@ public class UserMapperImpl implements UserMapper {
         agency.idAgency( signUpDto.agencyId() );
 
         return agency.build();
+    }
+
+    protected List<BankAccountDto> bankAccountListToBankAccountDtoList(List<BankAccount> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<BankAccountDto> list1 = new ArrayList<BankAccountDto>( list.size() );
+        for ( BankAccount bankAccount : list ) {
+            list1.add( toBankAccountDto( bankAccount ) );
+        }
+
+        return list1;
     }
 
     private Long userAgencyIdAgency(User user) {
