@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @SuperBuilder
-public class PersonneMoraleDto extends UserDto {
+public class PersonneMoraleDto extends ClientDto {
     private String firstName;
     private String lastName;
     private Gender gender;

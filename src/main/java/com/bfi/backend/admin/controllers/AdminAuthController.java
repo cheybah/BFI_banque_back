@@ -1,9 +1,9 @@
 package com.bfi.backend.admin.controllers;
 
-import com.bfi.backend.admin.auth.AdminUserAuthenticationProvider;
+import com.bfi.backend.admin.auth.AdminClientAuthenticationProvider;
 import com.bfi.backend.admin.dtos.AdminSignUpDto;
-import com.bfi.backend.admin.dtos.AdminUserDto;
-import com.bfi.backend.admin.services.AdminUserService;
+import com.bfi.backend.admin.dtos.AdminClientDto;
+import com.bfi.backend.admin.services.AdminClientService;
 import com.bfi.backend.admin.dtos.AdminCredentialsDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,20 +18,20 @@ import java.net.URI;
 @RestController
 public class AdminAuthController {
 
-    private final AdminUserService adminUserService;
-    private final AdminUserAuthenticationProvider adminUserAuthenticationProvider;
+    private final AdminClientService adminClientService;
+    private final AdminClientAuthenticationProvider adminClientAuthenticationProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<AdminUserDto> login(@RequestBody @Valid AdminCredentialsDto admincredentialsDto) {
-        AdminUserDto adminUserDto = adminUserService.login(admincredentialsDto);
-        adminUserDto.setToken(adminUserAuthenticationProvider.createToken(adminUserDto));
-        return ResponseEntity.ok(adminUserDto);
+    public ResponseEntity<AdminClientDto> login(@RequestBody @Valid AdminCredentialsDto admincredentialsDto) {
+        AdminClientDto adminClientDto = adminClientService.login(admincredentialsDto);
+        adminClientDto.setToken(adminClientAuthenticationProvider.createToken(adminClientDto));
+        return ResponseEntity.ok(adminClientDto);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AdminUserDto>register(@RequestBody @Valid AdminSignUpDto adminUser) {
-        AdminUserDto createdAdminUser = adminUserService.register(adminUser);
-        createdAdminUser.setToken(adminUserAuthenticationProvider.createToken(createdAdminUser));
-        return ResponseEntity.created(URI.create("/adminUsers/" + createdAdminUser.getId())).body(createdAdminUser);
+    public ResponseEntity<AdminClientDto>register(@RequestBody @Valid AdminSignUpDto adminClient) {
+        AdminClientDto createdAdminClient = adminClientService.register(adminClient);
+        createdAdminClient.setToken(adminClientAuthenticationProvider.createToken(createdAdminClient));
+        return ResponseEntity.created(URI.create("/adminClients/" + createdAdminClient.getId())).body(createdAdminClient);
     }
 }

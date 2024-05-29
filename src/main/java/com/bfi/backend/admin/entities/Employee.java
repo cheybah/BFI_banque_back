@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "employee") // Table name for admin panel users
+@Table(name = "employee") // Table name for admin panel Clients
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,16 +2,16 @@ package com.bfi.backend.client.controllers;
 
 import com.bfi.backend.client.dtos.BankAccountDto;
 import com.bfi.backend.client.dtos.CredentialsDto;
-import com.bfi.backend.client.auth.UserAuthenticationProvider;
+import com.bfi.backend.client.auth.ClientAuthenticationProvider;
 import com.bfi.backend.client.dtos.SignUpDto;
 import com.bfi.backend.client.dtos.SignUpPersonnePhysiqueDto;
 import com.bfi.backend.client.dtos.SignUpPersonneMoraleDto;
 
-import com.bfi.backend.client.dtos.UserDto;
-import com.bfi.backend.client.entites.User;
-import com.bfi.backend.client.repositories.UserRepository;
+import com.bfi.backend.client.dtos.ClientDto;
+import com.bfi.backend.client.entites.Client;
+import com.bfi.backend.client.repositories.ClientRepository;
 import com.bfi.backend.client.services.BankAccountService;
-import com.bfi.backend.client.services.UserService;
+import com.bfi.backend.client.services.ClientService;
 import com.bfi.backend.common.exceptions.AppException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,98 +29,98 @@ import java.util.Optional;
 @RestController
 public class AuthController {
 
-    private final UserService userService;
+    private final ClientService ClientService;
     private final BankAccountService bankAccountService;
 
-    private final UserAuthenticationProvider userAuthenticationProvider;
-    private final UserRepository userRepository;
+    private final ClientAuthenticationProvider ClientAuthenticationProvider;
+    private final ClientRepository ClientRepository;
 
 
     @PostMapping("/bfi/login")
-    public ResponseEntity<UserDto> login(@RequestBody @Valid CredentialsDto credentialsDto) {
-        UserDto userDto = userService.login(credentialsDto);
-        userDto.setToken(userAuthenticationProvider.createToken(userDto));
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<ClientDto> login(@RequestBody @Valid CredentialsDto credentialsDto) {
+        ClientDto ClientDto = ClientService.login(credentialsDto);
+        ClientDto.setToken(ClientAuthenticationProvider.createToken(ClientDto));
+        return ResponseEntity.ok(ClientDto);
     }
 /*
     @PostMapping("/dash/informations-personelles")
-    public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
-        UserDto createdUser = userService.register(user);
-        // Create bank accounts for the user
-        for (BankAccountDto bankAccountDto : user.bankAccounts()) {
-            bankAccountDto.setUserId(createdUser.getId());
+    public ResponseEntity<ClientDto> register(@RequestBody @Valid SignUpDto Client) {
+        ClientDto createdClient = ClientService.register(Client);
+        // Create bank accounts for the Client
+        for (BankAccountDto bankAccountDto : Client.bankAccounts()) {
+            bankAccountDto.setClientId(createdClient.getId());
             bankAccountService.createBankAccount(bankAccountDto);
         }
 
-        // Retrieve the updated user
-        createdUser = userService.findByLogin(user.login());
+        // Retrieve the updated Client
+        createdClient = ClientService.findByLogin(Client.login());
 
 
-        createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
-        System.out.println("Created User: " + createdUser); // Add this line to print the created user
-        return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
+        createdClient.setToken(ClientAuthenticationProvider.createToken(createdClient));
+        System.out.println("Created Client: " + createdClient); // Add this line to print the created Client
+        return ResponseEntity.created(URI.create("/Clients/" + createdClient.getId())).body(createdClient);
     }*/
 
 
     @PostMapping("/register/personne-physique")
-    public ResponseEntity<UserDto> registerPersonnePhysique(@RequestBody @Valid SignUpPersonnePhysiqueDto userDto) {
-        UserDto createdUser = userService.register(userDto);
+    public ResponseEntity<ClientDto> registerPersonnePhysique(@RequestBody @Valid SignUpPersonnePhysiqueDto ClientDto) {
+        ClientDto createdClient = ClientService.register(ClientDto);
 
-        // Create bank accounts for the user
-        for (BankAccountDto bankAccountDto : userDto.bankAccounts()) {
-            bankAccountDto.setUserId(createdUser.getId());
+        // Create bank accounts for the Client
+        for (BankAccountDto bankAccountDto : ClientDto.bankAccounts()) {
+            bankAccountDto.setClientId(createdClient.getId());
             bankAccountService.createBankAccount(bankAccountDto);
         }
 
-        createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
-        return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
+        createdClient.setToken(ClientAuthenticationProvider.createToken(createdClient));
+        return ResponseEntity.created(URI.create("/Clients/" + createdClient.getId())).body(createdClient);
     }
 
     @PostMapping("/register/personne-morale")
-    public ResponseEntity<UserDto> registerPersonneMorale(@RequestBody @Valid SignUpPersonneMoraleDto userDto) {
-        UserDto createdUser = userService.register(userDto);
+    public ResponseEntity<ClientDto> registerPersonneMorale(@RequestBody @Valid SignUpPersonneMoraleDto ClientDto) {
+        ClientDto createdClient = ClientService.register(ClientDto);
 
-        // Create bank accounts for the user
-        for (BankAccountDto bankAccountDto : userDto.bankAccounts()) {
-            bankAccountDto.setUserId(createdUser.getId());
+        // Create bank accounts for the Client
+        for (BankAccountDto bankAccountDto : ClientDto.bankAccounts()) {
+            bankAccountDto.setClientId(createdClient.getId());
             bankAccountService.createBankAccount(bankAccountDto);
         }
 
-        createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
-        return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
+        createdClient.setToken(ClientAuthenticationProvider.createToken(createdClient));
+        return ResponseEntity.created(URI.create("/Clients/" + createdClient.getId())).body(createdClient);
     }
     @PutMapping("/reset")
-    public ResponseEntity<UserDto> resetPassword(@RequestBody Map<String, String> resetRequest) {
+    public ResponseEntity<ClientDto> resetPassword(@RequestBody Map<String, String> resetRequest) {
         String login = resetRequest.get("login");
         String newPassword = resetRequest.get("newpassword");
 
-        // Call the resetPassword method of the UserService
-        userService.resetPassword(login, newPassword);
+        // Call the resetPassword method of the ClientService
+        ClientService.resetPassword(login, newPassword);
 
-        // Retrieve updated user details
-        UserDto updatedUser = userService.findByLogin(login);
+        // Retrieve updated Client details
+        ClientDto updatedClient = ClientService.findByLogin(login);
 
-        // Regenerate token for the updated user
-        String newToken = userAuthenticationProvider.createToken(updatedUser);
-        updatedUser.setToken(newToken);
+        // Regenerate token for the updated Client
+        String newToken = ClientAuthenticationProvider.createToken(updatedClient);
+        updatedClient.setToken(newToken);
 
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(updatedClient);
     }
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> findById(@PathVariable("id") Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Hibernate.initialize(user.getAddress()); // Explicitly initialize the address
-            return ResponseEntity.ok(user); // Wrap the user in ResponseEntity and return
+    @GetMapping("/Clients/{id}")
+    public ResponseEntity<Client> findById(@PathVariable("id") Long id) {
+        Optional<Client> optionalClient = ClientRepository.findById(id);
+        if (optionalClient.isPresent()) {
+            Client Client = optionalClient.get();
+            Hibernate.initialize(Client.getAddress()); // Explicitly initialize the address
+            return ResponseEntity.ok(Client); // Wrap the Client in ResponseEntity and return
         } else {
-            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+            throw new AppException("Client not found", HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/check-email")
     public ResponseEntity<Map<String, Boolean>> checkEmailExistence(@RequestParam String email) {
-        boolean exists = userService.checkEmailExistence(email);
+        boolean exists = ClientService.checkEmailExistence(email);
         return ResponseEntity.ok(Collections.singletonMap("exists", exists));
     }
 

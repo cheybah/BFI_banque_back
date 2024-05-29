@@ -1,7 +1,7 @@
 package com.bfi.backend.common.config;
 
-import com.bfi.backend.admin.auth.AdminUserAuthenticationProvider;
-import com.bfi.backend.client.auth.UserAuthenticationProvider;
+import com.bfi.backend.admin.auth.AdminClientAuthenticationProvider;
+import com.bfi.backend.client.auth.ClientAuthenticationProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +16,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final UserAuthenticationProvider userAuthenticationProvider;
-    private final AdminUserAuthenticationProvider adminUserAuthenticationProvider;
+    private final ClientAuthenticationProvider ClientAuthenticationProvider;
+    private final AdminClientAuthenticationProvider adminClientAuthenticationProvider;
 
     @Override
     protected void doFilterInternal(
@@ -34,13 +34,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     && "Bearer".equals(authElements[0])) {
                 try {
                     if ("GET".equals(request.getMethod())) {
-                        // Handle client user authentication
+                        // Handle client Client authentication
                         SecurityContextHolder.getContext().setAuthentication(
-                                userAuthenticationProvider.validateToken(authElements[1]));
+                                ClientAuthenticationProvider.validateToken(authElements[1]));
                     } else {
-                        // Handle admin user authentication
+                        // Handle admin Client authentication
                         SecurityContextHolder.getContext().setAuthentication(
-                                adminUserAuthenticationProvider.validateToken(authElements[1]));
+                                adminClientAuthenticationProvider.validateToken(authElements[1]));
                     }
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();

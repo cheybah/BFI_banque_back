@@ -2,7 +2,7 @@ package com.bfi.backend.admin.services;
 
 import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.admin.repository.AgencyRepository;
-import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.entites.Client;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

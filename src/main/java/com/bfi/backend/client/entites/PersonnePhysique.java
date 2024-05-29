@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @Entity
 @Table(name = "personne_physique")
-public class PersonnePhysique extends User {
+public class PersonnePhysique extends Client {
 
 
 }

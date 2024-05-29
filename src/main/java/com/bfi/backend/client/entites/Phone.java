@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_phone")
+@Table(name = "Client_phone")
 public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,12 +33,12 @@ public class Phone {
     private String countryCode;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // Assuming this is the column name in the user_phone table that references the User
-    private User user; // Add this field
+    @JoinColumn(name = "Client_id") // Assuming this is the column name in the Client_phone table that references the Client
+    private Client Client; // Add this field
 
-    // Add setter method for user
-    //public void setUser(User user) {
-      //  this.user = user;
+    // Add setter method for Client
+    //public void setClient(Client Client) {
+      //  this.Client = Client;
    // }
 
 }
