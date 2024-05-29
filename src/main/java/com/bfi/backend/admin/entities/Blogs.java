@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "blog") // Table name for admin panel users
+@Table(name = "blog") // Table name for admin panel Clients
 public class Blogs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

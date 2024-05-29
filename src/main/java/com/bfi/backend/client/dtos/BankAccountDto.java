@@ -1,6 +1,6 @@
 package com.bfi.backend.client.dtos;
 
-import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.entites.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class BankAccountDto {
     private String rib;
     private String code;
-    private Long userId;
+    private Long ClientId;
 }
 

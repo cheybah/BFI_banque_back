@@ -46,11 +46,11 @@ public class AdditionalInfo {
     @Column(nullable = false)
     private String referralCode;
 
-    // Define the relationship with User entity
+    // Define the relationship with Client entity
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "Client_id")
+    private Client Client;
 
 }
 

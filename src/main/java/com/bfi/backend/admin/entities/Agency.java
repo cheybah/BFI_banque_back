@@ -1,6 +1,6 @@
 package com.bfi.backend.admin.entities;
 
-import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.entites.Client;
 import com.bfi.backend.client.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "agency")
 public class Agency {
 
-    @Id //primary key for user
+    @Id //primary key for Client
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAgency;
 
@@ -45,5 +45,5 @@ public class Agency {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
-    private List<User> userList;
+    private List<Client> ClientList;
 }

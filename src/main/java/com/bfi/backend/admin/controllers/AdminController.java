@@ -1,6 +1,6 @@
 package com.bfi.backend.admin.controllers;
 
-import com.bfi.backend.admin.entities.AdminUser;
+import com.bfi.backend.admin.entities.AdminClient;
 import com.bfi.backend.admin.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ public class AdminController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AdminUser>> getAdminUsers() {
-        List<AdminUser> adminUsers = adminService.getAdmin();
-        return new ResponseEntity<>(adminUsers, HttpStatus.OK);
+    public ResponseEntity<List<AdminClient>> getAdminClients() {
+        List<AdminClient> adminClients = adminService.getAdmin();
+        return new ResponseEntity<>(adminClients, HttpStatus.OK);
     }
 }

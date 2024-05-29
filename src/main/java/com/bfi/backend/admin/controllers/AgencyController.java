@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-
 public class AgencyController {
     @Autowired
     private AgencyService agencyService;

@@ -33,6 +33,6 @@ public class AccountOffer {
     private PackType packType;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "Client_id", referencedColumnName = "id")
+    private Client Client;
 }
