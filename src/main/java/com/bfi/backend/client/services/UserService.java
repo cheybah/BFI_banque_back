@@ -1,10 +1,7 @@
 package com.bfi.backend.client.services;
 
 import com.bfi.backend.client.dtos.*;
-import com.bfi.backend.client.entites.AdditionalInfo;
-import com.bfi.backend.client.entites.Address;
-import com.bfi.backend.client.entites.BankAccount;
-import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.entites.*;
 import com.bfi.backend.client.mappers.UserMapper;
 import com.bfi.backend.client.repositories.BankAccountRepository;
 import com.bfi.backend.common.exceptions.AppException;
@@ -43,31 +40,28 @@ public class UserService {
     }
 
 
-        public UserDto register(SignUpDto userDto) {
+    public UserDto register(SignUpPersonnePhysiqueDto userDto) {
         Optional<User> optionalUser = userRepository.findByLogin(userDto.login());
 
         if (optionalUser.isPresent()) {
             throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
         }
 
-        User user = userMapper.signUpToUser(userDto);
+        PersonnePhysique user = userMapper.signUpToPersonnePhysique(userDto);
         user.setStatus(true);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
 
-        // Create and save the address
+        // Handle address
         Address address = new Address();
-        // Set address properties
         address.setCountry(userDto.address().getCountry());
         address.setCity(userDto.address().getCity());
         address.setNeighbourhood(userDto.address().getNeighbourhood());
         address.setZipCode(userDto.address().getZipCode());
-        // Associate address with the user
         user.setAddress(address);
-        address.setUser(user);  //save user_id in address
+        address.setUser(user);
 
-        // Create and save additional information
+        // Handle additional info
         AdditionalInfo additionalInfo = new AdditionalInfo();
-        // Populate additionalInfo fields as needed
         additionalInfo.setTypeIndividual(userDto.additionalInfo().getTypeIndividual());
         additionalInfo.setProfession(userDto.additionalInfo().getProfession());
         additionalInfo.setPieceType(userDto.additionalInfo().getPieceType());
@@ -75,17 +69,51 @@ public class UserService {
         additionalInfo.setExpirationDate(userDto.additionalInfo().getExpirationDate());
         additionalInfo.setPiecePhoto(userDto.additionalInfo().getPiecePhoto());
         additionalInfo.setReferralCode(userDto.additionalInfo().getReferralCode());
-        // Associate additionalInfo with the user
         user.setAdditionalInfo(additionalInfo);
         additionalInfo.setUser(user);
 
-        User savedUser = userRepository.save(user);
+        PersonnePhysique savedUser = userRepository.save(user);
 
-
-        System.out.println("id 4user"+user.getId());
-
-        return userMapper.toUserDto(savedUser);
+        return userMapper.toPersonnePhysiqueDto(savedUser);
     }
+
+    public UserDto register(SignUpPersonneMoraleDto userDto) {
+        Optional<User> optionalUser = userRepository.findByLogin(userDto.login());
+
+        if (optionalUser.isPresent()) {
+            throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
+        }
+
+        PersonneMorale user = userMapper.signUpToPersonneMorale(userDto);
+        user.setStatus(true);
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
+
+        // Handle address
+        Address address = new Address();
+        address.setCountry(userDto.address().getCountry());
+        address.setCity(userDto.address().getCity());
+        address.setNeighbourhood(userDto.address().getNeighbourhood());
+        address.setZipCode(userDto.address().getZipCode());
+        user.setAddress(address);
+        address.setUser(user);
+
+        // Handle additional info
+        AdditionalInfo additionalInfo = new AdditionalInfo();
+        additionalInfo.setTypeIndividual(userDto.additionalInfo().getTypeIndividual());
+        additionalInfo.setProfession(userDto.additionalInfo().getProfession());
+        additionalInfo.setPieceType(userDto.additionalInfo().getPieceType());
+        additionalInfo.setPieceNumber(userDto.additionalInfo().getPieceNumber());
+        additionalInfo.setExpirationDate(userDto.additionalInfo().getExpirationDate());
+        additionalInfo.setPiecePhoto(userDto.additionalInfo().getPiecePhoto());
+        additionalInfo.setReferralCode(userDto.additionalInfo().getReferralCode());
+        user.setAdditionalInfo(additionalInfo);
+        additionalInfo.setUser(user);
+
+        PersonneMorale savedUser = userRepository.save(user);
+
+        return userMapper.toPersonneMoraleDto(savedUser);
+    }
+
 
     public UserDto findByLogin(String login) {
         User user = userRepository.findByLogin(login)

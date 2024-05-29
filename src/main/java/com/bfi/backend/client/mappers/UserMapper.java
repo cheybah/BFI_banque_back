@@ -1,11 +1,10 @@
 package com.bfi.backend.client.mappers;
 
+import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.admin.repository.AgencyRepository;
 import com.bfi.backend.client.dtos.*;
-import com.bfi.backend.client.entites.AdditionalInfo;
-import com.bfi.backend.client.entites.Address;
-import com.bfi.backend.client.entites.BankAccount;
-import com.bfi.backend.client.entites.User;
+import com.bfi.backend.client.entites.*;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,6 +12,9 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "password", ignore = true)
+    default String mapPassword(char[] password) {
+        return password != null ? new String(password) : null;
+    }
     @Mapping(target = "agency.idAgency", source = "signUpDto.agencyId")
     User signUpToUser(SignUpDto signUpDto);
     @Mapping(target = "bankAccounts", source = "user.bankAccountList")
@@ -33,6 +35,15 @@ public interface UserMapper {
     //@Mapping(target = "userId", source = "userid.id")
    // BankAccountDto toBankAccountDto(BankAccount bankAccount);
     //BankAccount toBankAccount(BankAccountDto bankAccountDto);
+    @Mapping(target = "agency.idAgency", source="agencyId")
+    PersonnePhysique signUpToPersonnePhysique(SignUpPersonnePhysiqueDto userDto);
+    @Mapping(target = "agency.idAgency",source="agencyId")
+    PersonneMorale signUpToPersonneMorale(SignUpPersonneMoraleDto userDto);
+    @Mapping(target = "agencyId", source = "user.agency.idAgency")
 
+    PersonnePhysiqueDto toPersonnePhysiqueDto(PersonnePhysique user);
+    @Mapping(target = "agencyId", source = "user.agency.idAgency")
+
+    PersonneMoraleDto toPersonneMoraleDto(PersonneMorale user);
 
 }

@@ -8,27 +8,24 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
-public class UserDto {
-
-    private Long id;
-    private Gender gender;
+public class PersonneMoraleDto extends UserDto {
     private String firstName;
     private String lastName;
+    private Gender gender;
+    private LocalDate dateOfBirth;
     private String photo;
     private String email;
     private String phoneNumber;
-    private LocalDate dateOfBirth;
-    private String login;
-    private String token;
-    private AddressDto address;
-    private AdditionalInfoDto additionalInfo ;
-    private Long agencyId;
-    private List<BankAccountDto> bankAccounts;
-
+    private String raisonSocial;
+    private String formeJuridique;
+    private String abreviation;
+    private String categorie;
+    private LocalDate dateCreation;
+    private String codeRCCM;
+    private String codeNIF;
+    private String secteurActivite;
 }

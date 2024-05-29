@@ -1,26 +1,27 @@
 package com.bfi.backend.client.entites;
 
 import com.bfi.backend.admin.entities.Agency;
+
 import com.bfi.backend.client.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Data
+@SuperBuilder
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "app_user")
 public class User {
-
     @Id //primary key for user
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +39,7 @@ public class User {
 
     @Column(name = "photo")
     private String photo;
-  
+
     @Column(nullable = false)
     private String email;
 

@@ -4,6 +4,9 @@ import com.bfi.backend.client.dtos.BankAccountDto;
 import com.bfi.backend.client.dtos.CredentialsDto;
 import com.bfi.backend.client.auth.UserAuthenticationProvider;
 import com.bfi.backend.client.dtos.SignUpDto;
+import com.bfi.backend.client.dtos.SignUpPersonnePhysiqueDto;
+import com.bfi.backend.client.dtos.SignUpPersonneMoraleDto;
+
 import com.bfi.backend.client.dtos.UserDto;
 import com.bfi.backend.client.entites.User;
 import com.bfi.backend.client.repositories.UserRepository;
@@ -39,7 +42,7 @@ public class AuthController {
         userDto.setToken(userAuthenticationProvider.createToken(userDto));
         return ResponseEntity.ok(userDto);
     }
-
+/*
     @PostMapping("/dash/informations-personelles")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
         UserDto createdUser = userService.register(user);
@@ -55,6 +58,35 @@ public class AuthController {
 
         createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
         System.out.println("Created User: " + createdUser); // Add this line to print the created user
+        return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
+    }*/
+
+
+    @PostMapping("/register/personne-physique")
+    public ResponseEntity<UserDto> registerPersonnePhysique(@RequestBody @Valid SignUpPersonnePhysiqueDto userDto) {
+        UserDto createdUser = userService.register(userDto);
+
+        // Create bank accounts for the user
+        for (BankAccountDto bankAccountDto : userDto.bankAccounts()) {
+            bankAccountDto.setUserId(createdUser.getId());
+            bankAccountService.createBankAccount(bankAccountDto);
+        }
+
+        createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
+        return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
+    }
+
+    @PostMapping("/register/personne-morale")
+    public ResponseEntity<UserDto> registerPersonneMorale(@RequestBody @Valid SignUpPersonneMoraleDto userDto) {
+        UserDto createdUser = userService.register(userDto);
+
+        // Create bank accounts for the user
+        for (BankAccountDto bankAccountDto : userDto.bankAccounts()) {
+            bankAccountDto.setUserId(createdUser.getId());
+            bankAccountService.createBankAccount(bankAccountDto);
+        }
+
+        createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
         return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
     }
     @PutMapping("/reset")

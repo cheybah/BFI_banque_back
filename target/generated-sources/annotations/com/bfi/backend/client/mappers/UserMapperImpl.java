@@ -4,11 +4,17 @@ import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.dtos.AdditionalInfoDto;
 import com.bfi.backend.client.dtos.AddressDto;
 import com.bfi.backend.client.dtos.BankAccountDto;
+import com.bfi.backend.client.dtos.PersonneMoraleDto;
+import com.bfi.backend.client.dtos.PersonnePhysiqueDto;
 import com.bfi.backend.client.dtos.SignUpDto;
+import com.bfi.backend.client.dtos.SignUpPersonneMoraleDto;
+import com.bfi.backend.client.dtos.SignUpPersonnePhysiqueDto;
 import com.bfi.backend.client.dtos.UserDto;
 import com.bfi.backend.client.entites.AdditionalInfo;
 import com.bfi.backend.client.entites.Address;
 import com.bfi.backend.client.entites.BankAccount;
+import com.bfi.backend.client.entites.PersonneMorale;
+import com.bfi.backend.client.entites.PersonnePhysique;
 import com.bfi.backend.client.entites.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +23,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-23T16:34:27+0100",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (Oracle Corporation)"
+    date = "2024-05-29T09:43:28+0200",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 18.0.2.1 (Oracle Corporation)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -29,7 +35,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        User.UserBuilder user = User.builder();
+        User.UserBuilder<?, ?> user = User.builder();
 
         user.agency( signUpDtoToAgency( signUpDto ) );
         user.gender( signUpDto.gender() );
@@ -40,6 +46,7 @@ public class UserMapperImpl implements UserMapper {
         user.phoneNumber( signUpDto.phoneNumber() );
         user.dateOfBirth( signUpDto.dateOfBirth() );
         user.login( signUpDto.login() );
+        user.password( mapPassword( signUpDto.password() ) );
         user.address( toAddress( signUpDto.address() ) );
         user.additionalInfo( toAdditionalInfo( signUpDto.additionalInfo() ) );
 
@@ -52,7 +59,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserDto.UserDtoBuilder userDto = UserDto.builder();
+        UserDto.UserDtoBuilder<?, ?> userDto = UserDto.builder();
 
         userDto.bankAccounts( bankAccountListToBankAccountDtoList( user.getBankAccountList() ) );
         userDto.agencyId( userAgencyIdAgency( user ) );
@@ -169,6 +176,118 @@ public class UserMapperImpl implements UserMapper {
         return additionalInfo.build();
     }
 
+    @Override
+    public PersonnePhysique signUpToPersonnePhysique(SignUpPersonnePhysiqueDto userDto) {
+        if ( userDto == null ) {
+            return null;
+        }
+
+        PersonnePhysique.PersonnePhysiqueBuilder<?, ?> personnePhysique = PersonnePhysique.builder();
+
+        personnePhysique.agency( signUpPersonnePhysiqueDtoToAgency( userDto ) );
+        personnePhysique.gender( userDto.gender() );
+        personnePhysique.firstName( userDto.firstName() );
+        personnePhysique.lastName( userDto.lastName() );
+        personnePhysique.photo( userDto.photo() );
+        personnePhysique.email( userDto.email() );
+        personnePhysique.phoneNumber( userDto.phoneNumber() );
+        personnePhysique.dateOfBirth( userDto.dateOfBirth() );
+        personnePhysique.login( userDto.login() );
+        personnePhysique.password( mapPassword( userDto.password() ) );
+        personnePhysique.address( toAddress( userDto.address() ) );
+        personnePhysique.additionalInfo( toAdditionalInfo( userDto.additionalInfo() ) );
+
+        return personnePhysique.build();
+    }
+
+    @Override
+    public PersonneMorale signUpToPersonneMorale(SignUpPersonneMoraleDto userDto) {
+        if ( userDto == null ) {
+            return null;
+        }
+
+        PersonneMorale.PersonneMoraleBuilder<?, ?> personneMorale = PersonneMorale.builder();
+
+        personneMorale.agency( signUpPersonneMoraleDtoToAgency( userDto ) );
+        personneMorale.gender( userDto.gender() );
+        personneMorale.firstName( userDto.firstName() );
+        personneMorale.lastName( userDto.lastName() );
+        personneMorale.photo( userDto.photo() );
+        personneMorale.email( userDto.email() );
+        personneMorale.phoneNumber( userDto.phoneNumber() );
+        personneMorale.dateOfBirth( userDto.dateOfBirth() );
+        personneMorale.login( userDto.login() );
+        personneMorale.password( mapPassword( userDto.password() ) );
+        personneMorale.address( toAddress( userDto.address() ) );
+        personneMorale.additionalInfo( toAdditionalInfo( userDto.additionalInfo() ) );
+        personneMorale.raisonSocial( userDto.raisonSocial() );
+        personneMorale.formeJuridique( userDto.formeJuridique() );
+        personneMorale.abreviation( userDto.abreviation() );
+        personneMorale.categorie( userDto.categorie() );
+        personneMorale.dateCreation( userDto.dateCreation() );
+        personneMorale.codeRCCM( userDto.codeRCCM() );
+        personneMorale.codeNIF( userDto.codeNIF() );
+        personneMorale.secteurActivite( userDto.secteurActivite() );
+
+        return personneMorale.build();
+    }
+
+    @Override
+    public PersonnePhysiqueDto toPersonnePhysiqueDto(PersonnePhysique user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        PersonnePhysiqueDto.PersonnePhysiqueDtoBuilder<?, ?> personnePhysiqueDto = PersonnePhysiqueDto.builder();
+
+        personnePhysiqueDto.agencyId( userAgencyIdAgency1( user ) );
+        personnePhysiqueDto.id( user.getId() );
+        personnePhysiqueDto.login( user.getLogin() );
+        personnePhysiqueDto.address( toAddressDto( user.getAddress() ) );
+        personnePhysiqueDto.additionalInfo( toAdditionalInfoDto( user.getAdditionalInfo() ) );
+        personnePhysiqueDto.firstName( user.getFirstName() );
+        personnePhysiqueDto.lastName( user.getLastName() );
+        personnePhysiqueDto.gender( user.getGender() );
+        personnePhysiqueDto.dateOfBirth( user.getDateOfBirth() );
+        personnePhysiqueDto.photo( user.getPhoto() );
+        personnePhysiqueDto.email( user.getEmail() );
+        personnePhysiqueDto.phoneNumber( user.getPhoneNumber() );
+
+        return personnePhysiqueDto.build();
+    }
+
+    @Override
+    public PersonneMoraleDto toPersonneMoraleDto(PersonneMorale user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        PersonneMoraleDto.PersonneMoraleDtoBuilder<?, ?> personneMoraleDto = PersonneMoraleDto.builder();
+
+        personneMoraleDto.agencyId( userAgencyIdAgency2( user ) );
+        personneMoraleDto.id( user.getId() );
+        personneMoraleDto.login( user.getLogin() );
+        personneMoraleDto.address( toAddressDto( user.getAddress() ) );
+        personneMoraleDto.additionalInfo( toAdditionalInfoDto( user.getAdditionalInfo() ) );
+        personneMoraleDto.firstName( user.getFirstName() );
+        personneMoraleDto.lastName( user.getLastName() );
+        personneMoraleDto.gender( user.getGender() );
+        personneMoraleDto.dateOfBirth( user.getDateOfBirth() );
+        personneMoraleDto.photo( user.getPhoto() );
+        personneMoraleDto.email( user.getEmail() );
+        personneMoraleDto.phoneNumber( user.getPhoneNumber() );
+        personneMoraleDto.raisonSocial( user.getRaisonSocial() );
+        personneMoraleDto.formeJuridique( user.getFormeJuridique() );
+        personneMoraleDto.abreviation( user.getAbreviation() );
+        personneMoraleDto.categorie( user.getCategorie() );
+        personneMoraleDto.dateCreation( user.getDateCreation() );
+        personneMoraleDto.codeRCCM( user.getCodeRCCM() );
+        personneMoraleDto.codeNIF( user.getCodeNIF() );
+        personneMoraleDto.secteurActivite( user.getSecteurActivite() );
+
+        return personneMoraleDto.build();
+    }
+
     protected Agency signUpDtoToAgency(SignUpDto signUpDto) {
         if ( signUpDto == null ) {
             return null;
@@ -199,6 +318,60 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
         Agency agency = user.getAgency();
+        if ( agency == null ) {
+            return null;
+        }
+        Long idAgency = agency.getIdAgency();
+        if ( idAgency == null ) {
+            return null;
+        }
+        return idAgency;
+    }
+
+    protected Agency signUpPersonnePhysiqueDtoToAgency(SignUpPersonnePhysiqueDto signUpPersonnePhysiqueDto) {
+        if ( signUpPersonnePhysiqueDto == null ) {
+            return null;
+        }
+
+        Agency.AgencyBuilder agency = Agency.builder();
+
+        agency.idAgency( signUpPersonnePhysiqueDto.agencyId() );
+
+        return agency.build();
+    }
+
+    protected Agency signUpPersonneMoraleDtoToAgency(SignUpPersonneMoraleDto signUpPersonneMoraleDto) {
+        if ( signUpPersonneMoraleDto == null ) {
+            return null;
+        }
+
+        Agency.AgencyBuilder agency = Agency.builder();
+
+        agency.idAgency( signUpPersonneMoraleDto.agencyId() );
+
+        return agency.build();
+    }
+
+    private Long userAgencyIdAgency1(PersonnePhysique personnePhysique) {
+        if ( personnePhysique == null ) {
+            return null;
+        }
+        Agency agency = personnePhysique.getAgency();
+        if ( agency == null ) {
+            return null;
+        }
+        Long idAgency = agency.getIdAgency();
+        if ( idAgency == null ) {
+            return null;
+        }
+        return idAgency;
+    }
+
+    private Long userAgencyIdAgency2(PersonneMorale personneMorale) {
+        if ( personneMorale == null ) {
+            return null;
+        }
+        Agency agency = personneMorale.getAgency();
         if ( agency == null ) {
             return null;
         }
