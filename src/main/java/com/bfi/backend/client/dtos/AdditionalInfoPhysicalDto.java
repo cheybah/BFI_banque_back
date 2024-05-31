@@ -1,5 +1,6 @@
-package com.bfi.backend.client.entites;
+package com.bfi.backend.client.dtos;
 
+import com.bfi.backend.client.entites.PersonnePhysique;
 import com.bfi.backend.client.enums.PieceType;
 import com.bfi.backend.client.enums.TypeIndividual;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,34 +13,19 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Data
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 
-@Table(name = "additional_info")
-public class AdditionalInfo {
+public class AdditionalInfoPhysicalDto extends AdditionalInfoDto {
+    private String profession;
+    private TypeIndividual typeIndividual;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private PieceType pieceType;
-
-    @Column(nullable = false)
+    private String pieceNumber;
+    private LocalDate expirationDate;
     private String piecePhoto;
-    @Column(nullable = false)
     private String referralCode;
 
-    @Column(nullable = false)
-    private String pieceNumber;
-
-    @Column(nullable = false)
-    private LocalDate expirationDate;
-
 }
-

@@ -20,28 +20,14 @@ import java.util.List;
 @SuperBuilder
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "app_Client")
-public class Client {
-    @Id //primary key for Client
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Table(name = "table_clients")
+public class Client extends User {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "first_name", nullable = false)
-    @Size(max = 100)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    @Size(max = 100)
-    private String lastName;
-
     @Column(name = "photo")
     private String photo;
-
-    @Column(nullable = false)
-    private String email;
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -58,16 +44,12 @@ public class Client {
     private String password;
 
     @Column(name = "status", nullable = false)
-    private boolean status ;
+    private boolean status;
 
 
     @OneToOne(mappedBy = "Client", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Specify fetch type
     private Address address;
 
-    @OneToOne(mappedBy = "Client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private AdditionalInfo additionalInfo;
-
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
