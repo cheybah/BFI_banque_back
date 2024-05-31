@@ -1,8 +1,7 @@
 package com.bfi.backend.client.entites;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +18,6 @@ import java.time.LocalDate;
 public class PersonnePhysique extends Client {
 
 
+    @OneToOne(mappedBy = "PersonnePhysique", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AdditionalInfoPhysical additionalInfo;
 }

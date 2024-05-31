@@ -58,7 +58,7 @@ public class ClientService {
         address.setClient(Client);
 
         // Handle additional info
-        AdditionalInfo additionalInfo = new AdditionalInfo();
+        AdditionalInfoPhysical additionalInfo = new AdditionalInfoPhysical();
         additionalInfo.setTypeIndividual(ClientDto.additionalInfo().getTypeIndividual());
         additionalInfo.setProfession(ClientDto.additionalInfo().getProfession());
         additionalInfo.setPieceType(ClientDto.additionalInfo().getPieceType());
@@ -67,7 +67,7 @@ public class ClientService {
         additionalInfo.setPiecePhoto(ClientDto.additionalInfo().getPiecePhoto());
         additionalInfo.setReferralCode(ClientDto.additionalInfo().getReferralCode());
         Client.setAdditionalInfo(additionalInfo);
-        additionalInfo.setClient(Client);
+        additionalInfo.setPersonnePhysique(Client);
 
         PersonnePhysique savedClient = ClientRepository.save(Client);
 
@@ -95,16 +95,17 @@ public class ClientService {
         address.setClient(Client);
 
         // Handle additional info
-        AdditionalInfo additionalInfo = new AdditionalInfo();
-        additionalInfo.setTypeIndividual(ClientDto.additionalInfo().getTypeIndividual());
-        additionalInfo.setProfession(ClientDto.additionalInfo().getProfession());
+        AdditionalInfoCorporation additionalInfo = new AdditionalInfoCorporation();
         additionalInfo.setPieceType(ClientDto.additionalInfo().getPieceType());
         additionalInfo.setPieceNumber(ClientDto.additionalInfo().getPieceNumber());
+        additionalInfo.setCompanySize(ClientDto.additionalInfo().getCompanySize());
+        additionalInfo.setNatureSector(ClientDto.additionalInfo().getNatureSector());
+        additionalInfo.setFieldActivity(ClientDto.additionalInfo().getFieldActivity());
         additionalInfo.setExpirationDate(ClientDto.additionalInfo().getExpirationDate());
         additionalInfo.setPiecePhoto(ClientDto.additionalInfo().getPiecePhoto());
         additionalInfo.setReferralCode(ClientDto.additionalInfo().getReferralCode());
         Client.setAdditionalInfo(additionalInfo);
-        additionalInfo.setClient(Client);
+        additionalInfo.setPersonneMorale(Client);
 
         PersonneMorale savedClient = ClientRepository.save(Client);
 
