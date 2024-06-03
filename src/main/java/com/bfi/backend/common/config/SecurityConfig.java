@@ -35,6 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,  "/**").permitAll()
                         .requestMatchers(HttpMethod.GET,   "/**", "/Clients/**").permitAll()
                         .requestMatchers(HttpMethod.PUT,  "/reset").permitAll()
+                        .requestMatchers(HttpMethod.PUT,  "/**").permitAll()
+
                         .requestMatchers(HttpMethod.DELETE,  "/Clients/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE,  "/agencies/**").permitAll()
                         .requestMatchers(HttpMethod.PUT,  "/agencies/**").permitAll()

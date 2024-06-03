@@ -30,16 +30,13 @@ public class BankAccount {
     @Column(name = "code", nullable = false, unique = true)
     private String code;
 
+    @Column(name = "solde")
+    private Long solde;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_type_id", nullable = false)
-
-
-    private AccountType accountType; */
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "Client_id")
-    private Client Client;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
 
 }

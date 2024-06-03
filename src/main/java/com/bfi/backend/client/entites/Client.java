@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -47,7 +48,7 @@ public class Client extends User {
     private boolean status;
 
 
-    @OneToOne(mappedBy = "Client", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Specify fetch type
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Specify fetch type
     private Address address;
 
     @ManyToOne
@@ -55,6 +56,14 @@ public class Client extends User {
     private Agency agency;
 
 
-    @OneToMany(mappedBy = "Client")
+    @OneToMany(mappedBy = "client")
     private List<BankAccount> bankAccountList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "avoir",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    private List<Contact> contacts;
 }
