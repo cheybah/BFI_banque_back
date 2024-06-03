@@ -34,5 +34,5 @@ public class Address {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY) // Specify fetch type
     @JoinColumn(name = "Client_id")
-    private Client Client; // Foreign key referencing the Client table
+    private Client client; // Foreign key referencing the Client table
 }

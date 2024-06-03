@@ -12,6 +12,8 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor // Assurez-vous que cette annotation est présente
+
 @SuperBuilder
 @Entity
 @Table(name = "personne_physique")

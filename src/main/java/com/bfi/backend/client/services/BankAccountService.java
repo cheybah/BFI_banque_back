@@ -11,26 +11,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
-    private final ClientRepository ClientRepository;
-    private final ClientMapper ClientMapper; // Use ClientMapper instead of BankAccountMapper
+    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper; // Use ClientMapper instead of BankAccountMapper
 
     public BankAccountDto createBankAccount(BankAccountDto bankAccountDto) {
-            Client Client = ClientRepository.findById(bankAccountDto.getClientId())
+            Client Client = clientRepository.findById(bankAccountDto.getClientId())
                 .orElseThrow(() -> new AppException("Client not found", HttpStatus.NOT_FOUND));
 
-        BankAccount bankAccount = ClientMapper.toBankAccount(bankAccountDto);
+        BankAccount bankAccount = clientMapper.toBankAccount(bankAccountDto);
         bankAccount.setClient(Client);
 
         BankAccount savedBankAccount = bankAccountRepository.save(bankAccount);
 
         // Save the Client entity after adding the BankAccount to it
-        ClientRepository.save(Client);
+        clientRepository.save(Client);
 
-        return ClientMapper.toBankAccountDto(savedBankAccount);
+        return clientMapper.toBankAccountDto(savedBankAccount);
+    }
+    public Optional<BankAccount> getBankAccountById(Long id) {
+        return bankAccountRepository.findById(id);
+    }
+
+    public List<BankAccount> getBankAccountsByClientId(Long clientId) {
+        return bankAccountRepository.findByClientId(clientId);
     }
 }

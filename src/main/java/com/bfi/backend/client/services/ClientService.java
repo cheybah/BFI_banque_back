@@ -4,8 +4,10 @@ import com.bfi.backend.client.dtos.*;
 import com.bfi.backend.client.entites.*;
 import com.bfi.backend.client.mappers.ClientMapper;
 import com.bfi.backend.client.repositories.BankAccountRepository;
+import com.bfi.backend.client.repositories.ContactRepository;
 import com.bfi.backend.common.exceptions.AppException;
 import com.bfi.backend.client.repositories.ClientRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class ClientService {
+    private final ContactRepository contactRepository;
 
     private final ClientRepository ClientRepository;
 
@@ -142,6 +145,14 @@ public class ClientService {
 
     public boolean checkEmailExistence(String email) {
         return ClientRepository.findByEmail(email).isPresent();
+    }
+    // Method to link a client with a contact
+   public Client linkClientToContact(Long clientId, Long contactId) {
+        Client client = ClientRepository.findById(clientId).orElseThrow(() -> new AppException("Client not found", HttpStatus.NOT_FOUND));
+        Contact contact = contactRepository.findById(contactId).orElseThrow(() -> new AppException("Contact not found", HttpStatus.NOT_FOUND));
+
+        client.getContacts().add(contact);
+        return ClientRepository.save(client);
     }
 
 }

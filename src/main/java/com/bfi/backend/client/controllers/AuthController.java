@@ -3,15 +3,16 @@ package com.bfi.backend.client.controllers;
 import com.bfi.backend.client.dtos.BankAccountDto;
 import com.bfi.backend.client.dtos.CredentialsDto;
 import com.bfi.backend.client.auth.ClientAuthenticationProvider;
-import com.bfi.backend.client.dtos.SignUpDto;
 import com.bfi.backend.client.dtos.SignUpPersonnePhysiqueDto;
 import com.bfi.backend.client.dtos.SignUpPersonneMoraleDto;
 
 import com.bfi.backend.client.dtos.ClientDto;
 import com.bfi.backend.client.entites.Client;
+import com.bfi.backend.client.entites.Contact;
 import com.bfi.backend.client.repositories.ClientRepository;
 import com.bfi.backend.client.services.BankAccountService;
 import com.bfi.backend.client.services.ClientService;
+import com.bfi.backend.client.services.ContactService;
 import com.bfi.backend.common.exceptions.AppException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,6 +33,7 @@ public class AuthController {
 
     private final ClientService ClientService;
     private final BankAccountService bankAccountService;
+    private final ContactService contactService;
 
     private final ClientAuthenticationProvider ClientAuthenticationProvider;
     private final ClientRepository ClientRepository;
@@ -111,7 +114,11 @@ public class AuthController {
         Optional<Client> optionalClient = ClientRepository.findById(id);
         if (optionalClient.isPresent()) {
             Client Client = optionalClient.get();
-            Hibernate.initialize(Client.getAddress()); // Explicitly initialize the address
+            Hibernate.initialize(Client.getAddress());
+            // Fetch contacts explicitly and set them in the client object
+            List<Contact> contacts = contactService.getAllByClientId(Client.getId());
+
+            Client.setContacts(contacts);
             return ResponseEntity.ok(Client); // Wrap the Client in ResponseEntity and return
         } else {
             throw new AppException("Client not found", HttpStatus.NOT_FOUND);
@@ -124,5 +131,22 @@ public class AuthController {
         return ResponseEntity.ok(Collections.singletonMap("exists", exists));
     }
 
+    @GetMapping("/getUserId")
+    public ResponseEntity<Long> getUserIdByLogin(@RequestParam String login) {
+        Optional<Client> optionalClient = ClientRepository.findByLogin(login);
+        if (optionalClient.isPresent()) {
+            Long userId = optionalClient.get().getId();
+            return ResponseEntity.ok(userId);
+        } else {
+            throw new AppException("User not found for login: " + login, HttpStatus.NOT_FOUND);
+        }
+    }
 
+
+
+    @PutMapping("/clients/{clientId}/contacts/{contactId}")
+    public ResponseEntity<Client> addContactToClient(@PathVariable Long clientId, @PathVariable Long contactId) {
+        Client client = ClientService.linkClientToContact(clientId, contactId);
+        return ResponseEntity.ok(client);
+    }
 }
