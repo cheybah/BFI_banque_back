@@ -1,11 +1,13 @@
 package com.bfi.backend.client.controllers;
 
+import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.entites.Address;
 import com.bfi.backend.client.entites.Contact;
 import com.bfi.backend.client.repositories.ContactRepository;
 
 import com.bfi.backend.client.services.ContactService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +34,11 @@ public class ContactController {
         return contactService.addContact(contact);
     }
     @GetMapping("/contacts")
-    public ResponseEntity<List<Contact>> getAllContacts(@RequestParam Long clientId) {
-        List<Contact> contacts = contactService.getAllByClientId(clientId);
+    public ResponseEntity<List<Contact>> getAllContacts() {
+        List<Contact> contacts = contactService.getAllContacts();
         return ResponseEntity.ok(contacts);
     }
+
     @GetMapping("/clients/{clientId}/contacts")
     public ResponseEntity<List<Contact>> getClientContacts(@PathVariable Long clientId) {
         List<Contact> contacts = contactService.getAllByClientId(clientId);
