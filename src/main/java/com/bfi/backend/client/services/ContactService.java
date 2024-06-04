@@ -1,5 +1,6 @@
 package com.bfi.backend.client.services;
 
+import com.bfi.backend.admin.entities.Agency;
 import com.bfi.backend.client.entites.Contact;
 import com.bfi.backend.client.entites.Phone;
 import com.bfi.backend.client.repositories.ContactRepository;
@@ -16,6 +17,9 @@ public class ContactService {
 
     public Contact addContact(Contact contact) {
         return contactRepository.save(contact);
+    }
+    public List<Contact> getAllContacts() {
+        return contactRepository.findAll();
     }
 
     public List<Contact> getAllByClientId(Long clientId) {
