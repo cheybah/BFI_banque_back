@@ -59,6 +59,13 @@ public class Client extends User {
     @OneToMany(mappedBy = "client")
     private List<BankAccount> bankAccountList;
 
+    @OneToMany(mappedBy = "client")
+    private List<Rendez_Vous> rendezVous;
+
+    @OneToMany(mappedBy = "client")
+    private List<Notification> notifications;
+    @OneToMany(mappedBy = "client")
+    private List<Reclamation> reclamations;
     @ManyToMany
     @JoinTable(
             name = "avoir",
