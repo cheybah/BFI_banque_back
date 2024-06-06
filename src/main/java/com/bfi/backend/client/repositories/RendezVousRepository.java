@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RendezVousRepository extends JpaRepository<Rendez_Vous, Long> {
+
 }

@@ -1,8 +1,11 @@
 package com.bfi.backend.client.controllers;
 
+import com.bfi.backend.client.dtos.ReclamationDto;
 import com.bfi.backend.client.entites.Reclamation;
 import com.bfi.backend.client.services.ReclamationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,11 +14,14 @@ import java.util.List;
 @RequestMapping("/service-client/reclamations")
 public class ReclamationController {
 
-    private final ReclamationService reclamationService;
 
     @Autowired
-    public ReclamationController(ReclamationService reclamationService) {
-        this.reclamationService = reclamationService;
+    private ReclamationService reclamationService;
+
+    @PostMapping
+    public ResponseEntity<Reclamation> createReclamation(@RequestBody ReclamationDto reclamationDto) {
+        Reclamation savedReclamation = reclamationService.createReclamation(reclamationDto);
+        return new ResponseEntity<>(savedReclamation, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -28,9 +34,9 @@ public class ReclamationController {
         return reclamationService.getReclamationById(id);
     }
 
-    @PostMapping
-    public Reclamation saveReclamation(@RequestBody Reclamation reclamation) {
-        return reclamationService.saveReclamation(reclamation);
+    @PutMapping("/{id}")
+    public Reclamation updateReclamation(@PathVariable Long id, @RequestBody Reclamation reclamationDetails) {
+        return reclamationService.updateReclamation(id, reclamationDetails);
     }
 
     @DeleteMapping("/{id}")
