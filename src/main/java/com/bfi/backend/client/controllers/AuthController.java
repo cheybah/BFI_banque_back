@@ -45,25 +45,6 @@ public class AuthController {
         ClientDto.setToken(ClientAuthenticationProvider.createToken(ClientDto));
         return ResponseEntity.ok(ClientDto);
     }
-/*
-    @PostMapping("/dash/informations-personelles")
-    public ResponseEntity<ClientDto> register(@RequestBody @Valid SignUpDto Client) {
-        ClientDto createdClient = ClientService.register(Client);
-        // Create bank accounts for the Client
-        for (BankAccountDto bankAccountDto : Client.bankAccounts()) {
-            bankAccountDto.setClientId(createdClient.getId());
-            bankAccountService.createBankAccount(bankAccountDto);
-        }
-
-        // Retrieve the updated Client
-        createdClient = ClientService.findByLogin(Client.login());
-
-
-        createdClient.setToken(ClientAuthenticationProvider.createToken(createdClient));
-        System.out.println("Created Client: " + createdClient); // Add this line to print the created Client
-        return ResponseEntity.created(URI.create("/Clients/" + createdClient.getId())).body(createdClient);
-    }*/
-
 
     @PostMapping("/register/personne-physique")
     public ResponseEntity<ClientDto> registerPersonnePhysique(@RequestBody @Valid SignUpPersonnePhysiqueDto ClientDto) {

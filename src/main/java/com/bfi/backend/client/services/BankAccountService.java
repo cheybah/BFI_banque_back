@@ -43,4 +43,9 @@ public class BankAccountService {
     public List<BankAccount> getBankAccountsByClientId(Long clientId) {
         return bankAccountRepository.findByClientId(clientId);
     }
+    public BankAccount addBankAccountToClient(Long clientId, BankAccount bankAccount) {
+        Client client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Client non trouvé"));
+        bankAccount.setClient(client);
+        return bankAccountRepository.save(bankAccount);
+    }
 }
