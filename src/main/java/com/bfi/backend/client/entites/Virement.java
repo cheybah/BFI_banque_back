@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "virement")
 public class Virement extends OperationBancaire {
-    private String  compte_a_debite;
-    private String compte_a_crediter;
+    private String  compteADebite;
+    private String compteACrediter;
 
 }
