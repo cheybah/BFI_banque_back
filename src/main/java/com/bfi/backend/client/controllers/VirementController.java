@@ -17,17 +17,7 @@ public class VirementController {
 
 
 
-        @PostMapping("virements")
-        public ResponseEntity<Virement> createVirement(@RequestBody VirementDto request) {
-            Virement virement = virementService.createVirement(
-                    request.getClientId(),
-                    request.getCompteADebiter(),
-                    request.getCompteACrediter(),
-                    request.getMontant(),
-                    request.getMotif()
-            );
-            return ResponseEntity.ok(virement);
-        }
+
 
 
     @GetMapping("/byAccount")

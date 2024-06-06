@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class RendezVousDto {
 
+    private Long id;
     private Long clientId;
     private String agence;
     private String raison;

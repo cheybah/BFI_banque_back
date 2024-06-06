@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RendezVousService {
@@ -39,5 +40,28 @@ public class RendezVousService {
 
     public List<Rendez_Vous> getAllRendezVous() {
         return rendezVousRepository.findAll();
+    }
+
+    public List<RendezVousDto> getAllRendezVousWithClientDetails() {
+        return rendezVousRepository.findAll().stream()
+                .map(rendezVous -> {
+                    RendezVousDto rendezVousDto = new RendezVousDto();
+                    rendezVousDto.setId(rendezVous.getId()); // Add this line
+                    rendezVousDto.setClientId(rendezVous.getClient().getId());
+                    rendezVousDto.setAgence(rendezVous.getAgence());
+                    rendezVousDto.setRaison(rendezVous.getRaison());
+                    rendezVousDto.setDate(rendezVous.getDate());
+                    rendezVousDto.setHeure(rendezVous.getHeure());
+                    rendezVousDto.setStatus(rendezVous.getStatus());
+                    return rendezVousDto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public Rendez_Vous updateRendezVousStatus(Long id, String status) {
+        Rendez_Vous rendezVous = rendezVousRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rendez_Vous not found"));
+        rendezVous.setStatus(status);
+        return rendezVousRepository.save(rendezVous);
     }
 }

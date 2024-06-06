@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReclamationService {
@@ -50,13 +51,29 @@ public class ReclamationService {
         return reclamationRepository.findById(id).orElse(null);
     }
 
+    public List<ReclamationDto> getAllReclamationsWithClientDetails() {
+        return reclamationRepository.findAll().stream()
+                .map(reclamation -> {
+                    ReclamationDto reclamationDto = new ReclamationDto();
+                    reclamationDto.setIdReclamation(reclamation.getIdReclamation()); // Add this line
+                    reclamationDto.setClientId(reclamation.getClient().getId());
+                    reclamationDto.setReference(reclamation.getReference());
+                    reclamationDto.setSujet(reclamation.getSujet());
+                    reclamationDto.setContenu(reclamation.getContenu());
+                    reclamationDto.setDate(reclamation.getDate());
+                    reclamationDto.setReponse(reclamation.getReponse());
+                    reclamationDto.setStatus(reclamation.getStatus());
+                    return reclamationDto;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     public Reclamation updateReclamation(Long id, Reclamation reclamationDetails) {
         Reclamation reclamation = reclamationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reclamation not found with id: " + id));
         reclamation.setReponse(reclamationDetails.getReponse());
         reclamation.setStatus(reclamationDetails.getStatus());
-
         Reclamation updatedReclamation = reclamationRepository.save(reclamation);
         return updatedReclamation;
     }
