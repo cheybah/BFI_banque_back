@@ -5,10 +5,7 @@ import com.bfi.backend.client.services.BankAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RequiredArgsConstructor
@@ -25,5 +22,10 @@ public class BankAccountController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(bankAccounts);
+    }
+    @PostMapping("/client/{clientId}")
+    public ResponseEntity<BankAccount> addBankAccountToClient(@PathVariable Long clientId, @RequestBody BankAccount bankAccount) {
+        BankAccount newBankAccount = bankAccountService.addBankAccountToClient(clientId, bankAccount);
+        return ResponseEntity.ok(newBankAccount);
     }
 }

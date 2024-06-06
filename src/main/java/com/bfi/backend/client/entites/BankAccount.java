@@ -19,7 +19,6 @@ import java.util.List;
 @Table(name = "bank_account")
 public class BankAccount {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,7 +32,7 @@ public class BankAccount {
     private String code;
 
     @Column(name = "solde")
-    private Long solde;
+    private Double solde;
 
     @JsonIgnore
     @ManyToOne

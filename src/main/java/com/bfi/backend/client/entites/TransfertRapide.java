@@ -22,7 +22,7 @@ public class TransfertRapide extends OperationBancaire {
     private String reponse;
     private String question;
     private String frais;
-    private String compteADebiter;
+    private String compteAdebiter;
     private String pays;
     private String canalTransfert;
 }
