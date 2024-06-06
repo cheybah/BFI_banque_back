@@ -21,15 +21,15 @@ public class Rendez_Vous {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "temps")
-    private String temps;
-
-    @Column(name = "status", nullable = false)
-    private String status;
-
-    @Column(name = "date", nullable = false)
-    private Date date;
+    private String agence;
     @Column(name = "raison", nullable = false)
     private String raison;
+    @Column(name = "date", nullable = false)
+    private String date;
+    @Column(name = "heure", nullable = false)
+    private String heure;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @JsonIgnore
     @ManyToOne
