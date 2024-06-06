@@ -18,16 +18,18 @@ public class Reclamation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReclamation;
-    @Column(name = "etat")
-    private String etat;
-    @Column(name = "reponse")
-    private String reponse;
-    @Column(name = "date")
-    private Date date;
-    @Column(name = "contenu")
-    private String contenu;
+    @Column(name = "reference")
+    private String reference;
     @Column(name = "sujet")
     private String sujet;
+    @Column(name = "contenu")
+    private String contenu;
+    @Column(name = "date")
+    private String date;
+    @Column(name = "reponse")
+    private String reponse;
+    @Column(name = "status")
+    private String status;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "client")
