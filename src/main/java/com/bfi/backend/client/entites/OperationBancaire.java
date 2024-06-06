@@ -22,11 +22,11 @@ public class OperationBancaire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private Date date;
 
     @Column(name = "mantant", nullable = false)
-    private Double mantant;
+    private String mantant;
 
     @Column(name = "motif")
     private Long motif;

@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ReclamationDto {
 
+    private Long idReclamation; // Add this line
     private Long clientId;
     private String reference;
     private String sujet;
