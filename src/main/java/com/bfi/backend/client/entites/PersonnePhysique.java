@@ -22,4 +22,5 @@ public class PersonnePhysique extends Client {
 
     @OneToOne(mappedBy = "PersonnePhysique", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AdditionalInfoPhysical additionalInfo;
+
 }
