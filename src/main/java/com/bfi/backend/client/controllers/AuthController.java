@@ -124,7 +124,18 @@ public class AuthController {
     }
 
 
-
+    @PostMapping("/clients/{clientId}/contacts")
+    public ResponseEntity<Contact> createContact(@PathVariable Long clientId, @RequestBody Contact contact) {
+        Optional<Client> clientOptional = ClientRepository.findById(clientId);
+        if (clientOptional.isPresent()) {
+            Client client = clientOptional.get();
+            contact.getClients().add(client);
+            Contact savedContact = contactService.addContact(contact);
+            return new ResponseEntity<>(savedContact, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     @PutMapping("/clients/{clientId}/contacts/{contactId}")
     public ResponseEntity<Client> addContactToClient(@PathVariable Long clientId, @PathVariable Long contactId) {
         Client client = ClientService.linkClientToContact(clientId, contactId);

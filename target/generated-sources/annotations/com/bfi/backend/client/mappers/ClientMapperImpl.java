@@ -25,8 +25,16 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
+<<<<<<< HEAD
+<<<<<<< HEAD
+    date = "2024-06-07T12:01:34+0200",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 18.0.2.1 (Oracle Corporation)"
+=======
+=======
+>>>>>>> main
     date = "2024-06-06T19:50:56+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (Oracle Corporation)"
+>>>>>>> 3cecb55c9ab700d0d4606e43bc14fc37fcce7936
 )
 @Component
 public class ClientMapperImpl implements ClientMapper {

@@ -27,4 +27,5 @@ public class AdditionalInfoPhysical extends AdditionalInfo{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ClientPhysique_id")
     private PersonnePhysique PersonnePhysique;
+
 }

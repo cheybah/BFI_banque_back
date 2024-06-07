@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.jdbc.core.SqlReturnType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -46,5 +47,5 @@ public class Contact {
 
     @ManyToMany(mappedBy = "contacts")
     @JsonIgnore
-    private List<Client> clients;
+    private List<Client> clients= new ArrayList<>();;
 }
