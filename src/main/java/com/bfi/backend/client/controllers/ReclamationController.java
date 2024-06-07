@@ -1,6 +1,7 @@
 package com.bfi.backend.client.controllers;
 
 import com.bfi.backend.client.dtos.ReclamationDto;
+import com.bfi.backend.client.dtos.RendezVousDto;
 import com.bfi.backend.client.entites.Reclamation;
 import com.bfi.backend.client.services.ReclamationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class ReclamationController {
     @GetMapping
     public List<Reclamation> getAllReclamations() {
         return reclamationService.getAllReclamations();
+    }
+
+    @GetMapping("/with-client-details")
+    public List<ReclamationDto> getAllReclamationsWithClientDetails() {
+        return reclamationService.getAllReclamationsWithClientDetails();
     }
 
     @GetMapping("/{id}")

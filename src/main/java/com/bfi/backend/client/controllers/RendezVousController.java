@@ -26,5 +26,17 @@ public class RendezVousController {
     public List<Rendez_Vous> getAllRendezVous() {
         return rendezVousService.getAllRendezVous();
     }
+
+    @GetMapping("/with-client-details")
+    public List<RendezVousDto> getAllRendezVousWithClientDetails() {
+        return rendezVousService.getAllRendezVousWithClientDetails();
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Rendez_Vous> updateRendezVousStatus(@PathVariable Long id, @RequestBody String status) {
+        status = status.trim();
+        Rendez_Vous updatedRendezVous = rendezVousService.updateRendezVousStatus(id, status);
+        return new ResponseEntity<>(updatedRendezVous, HttpStatus.OK);
+    }
 }
 
