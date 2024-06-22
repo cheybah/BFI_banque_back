@@ -1,11 +1,11 @@
 package com.bfi.backend.common.config;
 
 import org.springframework.context.annotation.Bean;
-        import org.springframework.context.annotation.Configuration;
-        import org.springframework.mail.javamail.JavaMailSender;
-        import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-        import java.util.Properties;
+import java.util.Properties;
 
 @Configuration
 public class MailConfig {
@@ -16,8 +16,8 @@ public class MailConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("cheymabahroun@gmail.com");
-        mailSender.setPassword("eydj olky awnk ekgh");
+        mailSender.setUsername("sourour.methni@gmail.com");
+        mailSender.setPassword("qkim dppi giko egmr");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

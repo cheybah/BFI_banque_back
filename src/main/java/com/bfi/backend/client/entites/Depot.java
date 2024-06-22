@@ -2,18 +2,19 @@ package com.bfi.backend.client.entites;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Entity
 @Table(name = "Depot")
-public class Depot extends OperationBancaire{
-    private String depot_option;
-    private String depot_compte_source;
+public class Depot extends OperationBancaire {
+
+    private String depot_option; // Propriété spécifique à Depot
+    private String depot_compte_source; // Propriété spécifique à Depot
 }
