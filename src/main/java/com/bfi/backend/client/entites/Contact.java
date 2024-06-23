@@ -40,10 +40,18 @@ public class Contact {
 
     @Column
     private String categorie;
-    
+
+    @Column
+    private String libelle;
+    @Column
+    private String type;
+    @Column
+    private String rib;
+
     @Column
     @Size(max = 100)
     private String address;
+
 
     @ManyToMany(mappedBy = "contacts")
     @JsonIgnore

@@ -6,6 +6,7 @@ import com.bfi.backend.client.entites.Contact;
 import com.bfi.backend.client.repositories.ContactRepository;
 
 import com.bfi.backend.client.services.ContactService;
+import com.bfi.backend.common.exceptions.AppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,9 @@ public class ContactController {
 
     @PostMapping("/contacts")
     public Contact createContact(@RequestBody Contact contact) {
+        if (contact.getFullName() == null || contact.getFullName().isEmpty()) {
+            new AppException("Full name is required.", HttpStatus.NO_CONTENT);
+        }
         return contactService.addContact(contact);
     }
     @GetMapping("/contacts")

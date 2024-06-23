@@ -23,10 +23,11 @@ public class OperationBancaire {
     private Long id;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private Date date = new Date(); // Initialisation automatique de la date
 
-    @Column(name = "mantant", nullable = false)
-    private String mantant;
+
+    @Column(name = "montant", nullable = false) // Changement ici pour utiliser "montant" au lieu de "mantant"
+    private Double montant; // Propriété montant dans OperationBancaire
 
     @Column(name = "motif")
     private Long motif;

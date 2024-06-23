@@ -14,6 +14,10 @@ public class EmailController {
         emailService.sendSimpleMessage(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getText());
         return "Email sent successfully!";
     }
+    @PostMapping("/sendOtp")
+    public void sendOtpEmail(@RequestBody EmailRequest emailRequest) {
+        emailService.sendSimpleMessage(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getText());
+    }
 }
 
 

@@ -31,7 +31,7 @@ public class OperationBancaireService {
         return operationBancaireRepository.findById(id)
                 .map(operation -> {
                     operation.setDate(operationDetails.getDate());
-                    operation.setMantant(operationDetails.getMantant());
+                    operation.setMontant(operationDetails.getMontant());
                     operation.setMotif(operationDetails.getMotif());
                     return operationBancaireRepository.save(operation);
                 }).orElseThrow(() -> new RuntimeException("Operation not found"));
