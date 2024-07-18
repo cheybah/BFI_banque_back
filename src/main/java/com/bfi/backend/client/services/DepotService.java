@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,10 @@ public class DepotService {
         this.bankAccountRepository = bankAccountRepository;
         this.depotRepository = depotRepository;
     }
+    public List<Depot> getAllDepots() {
 
+        return depotRepository.findAll(); // Utilisation de JpaRepository ou autre
+    }
     public Depot makeDeposit(Double montant, String ribDepotCompteSource, String depot_option, String motif) {
         Optional<BankAccount> optionalBankAccount = bankAccountRepository.findByRib(ribDepotCompteSource);
         if (optionalBankAccount.isPresent()) {
@@ -58,4 +62,66 @@ public class DepotService {
             throw new AppException("Bank account not found with RIB: " + ribDepotCompteSource,HttpStatus.NOT_FOUND);
         }
     }
+    public Depot requestDeposit(Double montant, String ribDepotCompteSource, String depot_option, String motif) {
+        Optional<BankAccount> optionalBankAccount = bankAccountRepository.findByRib(ribDepotCompteSource);
+        if (optionalBankAccount.isPresent()) {
+            BankAccount bankAccount = optionalBankAccount.get();
+
+            Double solde = bankAccount.getSolde();
+            if (solde == null) {
+                solde = 0.0;
+            }
+
+            Depot depot = Depot.builder()
+                    .montant(montant)
+                    .date(new Date())
+                    .motif(Long.valueOf(motif))
+                    .depot_compte_source(ribDepotCompteSource)
+                    .depot_option(depot_option)
+                    .bankaccount(bankAccount)
+                    .isApproved(false)
+                    .build();
+
+            return depotRepository.save(depot);
+        } else {
+            throw new AppException("Bank account not found with RIB: " + ribDepotCompteSource, HttpStatus.NOT_FOUND);
+        }
+    }
+    public Depot approveDeposit(Long depotId) {
+        Optional<Depot> optionalDepot = depotRepository.findById(depotId);
+        if (optionalDepot.isPresent()) {
+            Depot depot = optionalDepot.get();
+            if (!depot.getIsApproved()) {
+                BankAccount bankAccount = depot.getBankaccount();
+                Double newSolde = bankAccount.getSolde() + depot.getMontant();
+                bankAccount.setSolde(newSolde);
+                bankAccountRepository.save(bankAccount);
+
+                depot.setIsApproved(true);
+                return depotRepository.save(depot);
+            } else {
+                throw new AppException("Deposit is already approved", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            throw new AppException("Deposit not found with ID: " + depotId, HttpStatus.NOT_FOUND);
+        }
+    }
+    public Depot rejectDeposit(Long depotId) {
+        Optional<Depot> optionalDepot = depotRepository.findById(depotId);
+        if (optionalDepot.isPresent()) {
+            Depot depot = optionalDepot.get();
+            if (!depot.getIsApproved()) {
+                BankAccount bankAccount = depot.getBankaccount();
+
+                bankAccountRepository.save(bankAccount);
+
+                return depotRepository.save(depot);
+            } else {
+                throw new AppException("Deposit is already rejected", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            throw new AppException("Deposit not found with ID: " + depotId, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

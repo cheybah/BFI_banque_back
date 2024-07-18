@@ -37,7 +37,14 @@ public class VirementService {
 
         logger.debug("Found compteDebiteur: {}", compteDebiteur);
         logger.debug("Found compteCrediteur: {}", compteCrediteur);
-
+        Double soldeDebiteur = compteDebiteur.getSolde();
+        Double soldeCrediteur = compteCrediteur.getSolde();
+        if (soldeCrediteur == null) {
+            compteCrediteur.setSolde(0.0); // Initialisez le solde à 0.0 si c'est null
+        }
+        if (soldeDebiteur == null) {
+            compteDebiteur.setSolde(0.0); // Initialisez le solde à 0.0 si c'est null
+        }
         // Check solde of debiteur account
         if (compteDebiteur.getSolde() < montant) {
             throw new AppException("Solde insuffisant", HttpStatus.NOT_ACCEPTABLE);
@@ -63,6 +70,9 @@ public class VirementService {
     }
 
 
+    public List<Virement> getAllVirements() {
+        return virementRepository.findAll();
+    }
     public List<Virement> getVirementsByBankAccountRib(String rib) {
         return virementRepository.findByCompteADebiteOrCompteACrediter(rib, rib);
     }

@@ -15,6 +15,11 @@ public class VirementController {
     @Autowired
     private VirementService virementService;
 
+    @GetMapping("virements")
+    public ResponseEntity<List<Virement>> getAllVirements() {
+        List<Virement> virements = virementService.getAllVirements();
+        return ResponseEntity.ok(virements);
+    }
 
     @PostMapping("virements")
     public ResponseEntity<Virement> createVirement(@RequestBody VirementDto request) {

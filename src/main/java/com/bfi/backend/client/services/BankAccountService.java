@@ -48,4 +48,8 @@ public class BankAccountService {
         bankAccount.setClient(client);
         return bankAccountRepository.save(bankAccount);
     }
+    public List<BankAccount> getAllBankAccounts() {
+        return bankAccountRepository.findAll();
+    }
+
 }

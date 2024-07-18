@@ -28,4 +28,8 @@ public class BankAccountController {
         BankAccount newBankAccount = bankAccountService.addBankAccountToClient(clientId, bankAccount);
         return ResponseEntity.ok(newBankAccount);
     }
+    @GetMapping
+    public List<BankAccount> getAllBankAccounts() {
+        return bankAccountService.getAllBankAccounts();
+    }
 }

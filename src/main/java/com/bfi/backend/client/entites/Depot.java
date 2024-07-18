@@ -17,4 +17,11 @@ public class Depot extends OperationBancaire {
 
     private String depot_option; // Propriété spécifique à Depot
     private String depot_compte_source; // Propriété spécifique à Depot
+    private Boolean isApproved ; // Nouveau champ pour le statut d'approbation
+
+    // Constructeur spécifique pour les dépôts
+    public Depot(Double montant, String depot_compte_source) {
+        this.setMontant(montant);
+        this.depot_compte_source = depot_compte_source;
+    }
 }
